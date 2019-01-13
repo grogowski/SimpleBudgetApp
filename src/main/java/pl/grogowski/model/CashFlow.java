@@ -18,6 +18,8 @@ public class CashFlow {
 
     private LocalDateTime date;
 
+    private boolean inflow;
+
     public Long getId() {
         return id;
     }
@@ -48,5 +50,13 @@ public class CashFlow {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public boolean isInflow() {
+        return inflow;
+    }
+
+    public void setInflow(boolean inflow) {
+        this.inflow = inflow;
     }
 }
