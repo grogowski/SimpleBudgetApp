@@ -3,9 +3,7 @@ package pl.grogowski.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.grogowski.model.Category;
-import pl.grogowski.model.Record;
 import pl.grogowski.repository.CategoryRepository;
-import pl.grogowski.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +13,13 @@ public class CategoryService {
     @Autowired
     CategoryRepository categoryRepository;
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     public List<Category> getCategoriesForUser(String userEmail) {
-        List<Category> categories = categoryRepository.findByUser(userRepository.findByEmail(userEmail));
+        List<Category> categories = categoryRepository.findByUser(userService.getUserByEmail(userEmail));
         if (categories.isEmpty()) {
             createCategoriesForNewUser(userEmail);
-            categories = categoryRepository.findByUser(userRepository.findByEmail(userEmail));
+            categories = categoryRepository.findByUser(userService.getUserByEmail(userEmail));
         }
         return categories;
     }
@@ -32,7 +30,7 @@ public class CategoryService {
         for (Category c: categories) {
             Category newCategory = new Category();
             newCategory.setName(c.getName());
-            newCategory.setUser(userRepository.findByEmail(userEmail));
+            newCategory.setUser(userService.getUserByEmail(userEmail));
             toBePersisted.add(newCategory);
         }
         categoryRepository.save(toBePersisted);

@@ -13,4 +13,7 @@ public interface CashFlowRepository extends JpaRepository<CashFlow, Long> {
 
     @Query("select c from CashFlow c where c.user = ?1 and c.category = ?2 and c.date between ?3 and ?4")
     List<CashFlow> queryFindByUserAndByCategoryAndByDate(User user, Category category, LocalDate date1, LocalDate date2);
+
+    @Query("select c from CashFlow c where c.user =?1 and c.inflow = ?2")
+    List<CashFlow> queryAllCashFlowsByUser(User user, Boolean inflow);
 }

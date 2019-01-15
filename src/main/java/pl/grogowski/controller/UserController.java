@@ -5,13 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import pl.grogowski.model.CashFlow;
 import pl.grogowski.model.Record;
-import pl.grogowski.repository.CategoryRepository;
 import pl.grogowski.service.CashFlowService;
 import pl.grogowski.service.CategoryService;
 import pl.grogowski.service.RecordService;
+import pl.grogowski.service.UserService;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -26,12 +26,17 @@ public class UserController {
     @Autowired
     CashFlowService cashFlowService;
     @Autowired
-    CategoryRepository categoryRepository;
+    UserService userService;
 
     @RequestMapping("/main")
     public String showMain(Model model, @SessionAttribute String userEmail) {
-        List<Record> records = recordService.getRecordsForUserGivenDate(userEmail, LocalDate.now().getMonthValue(), LocalDate.now().getYear());
+        LocalDate date = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1);
+        List<Record> records = recordService.getRecordsForGivenMonth(userEmail, date);
+        BigDecimal totalBudgeted = recordService.getTotalBudgetedForGivenMonth(userEmail, date);
+        BigDecimal balance = userService.getUserBalance(userEmail);
         model.addAttribute("records", records);
+        model.addAttribute("budgeted", totalBudgeted);
+        model.addAttribute("balance", balance);
         return "/user/main";
     }
 

@@ -3,7 +3,6 @@ package pl.grogowski.model;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "cash_flow")
@@ -33,6 +32,11 @@ public class CashFlow {
     }
 
     public Category getCategory() {
+        if (category == null) {
+            Category c = new Category();
+            c.setName("To be Budgeted");
+            return c;
+        }
         return category;
     }
 

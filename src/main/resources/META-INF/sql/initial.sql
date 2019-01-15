@@ -1,4 +1,3 @@
-insert into categories (name, user_id) values ("To be Budgeted", null);
 insert into categories (name, user_id) values ("Rent/Mortgage", null);
 insert into categories (name, user_id) values ("Electric", null);
 insert into categories (name, user_id) values ("Water", null);

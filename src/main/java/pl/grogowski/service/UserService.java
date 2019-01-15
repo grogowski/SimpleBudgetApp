@@ -6,17 +6,18 @@ import org.springframework.stereotype.Service;
 import pl.grogowski.model.User;
 import pl.grogowski.repository.UserRepository;
 
+import java.math.BigDecimal;
+
 @Service
 public class UserService {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    CashFlowService cashFlowService;
 
     public boolean authenticate(String email, String password) {
         User fromDatabase = userRepository.findByEmail(email);
         if (fromDatabase != null) {
-//            if(fromDatabase.getPassword().equals(password)){
-//                return true;
-//            }
             if (BCrypt.checkpw(password, fromDatabase.getPassword())) {
                 return true;
             }
@@ -36,5 +37,17 @@ public class UserService {
         String plainPassword = user.getPassword();
         user.setPassword(BCrypt.hashpw(plainPassword, BCrypt.gensalt()));
         userRepository.save(user);
+    }
+
+    public BigDecimal getUserBalance(String email) {
+        return getUserIncome(email).subtract(getUserOutcome(email));
+    }
+
+    public BigDecimal getUserOutcome(String email) {
+        return cashFlowService.getUserOutcome(email);
+    }
+
+    private BigDecimal getUserIncome(String email) {
+        return cashFlowService.getUserIncome(email);
     }
 }

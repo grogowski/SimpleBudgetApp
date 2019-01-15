@@ -5,15 +5,18 @@
     <title>Main</title>
 </head>
 <body>
+<h2>Total budgeted: ${budgeted}</h2>
+<h2>Balance: ${balance}</h2>
 <table>
     <thead>
     <tr>
-        <th colspan="3">Records</th>
+        <th colspan="4">Records</th>
     </tr>
     <tr>
         <th>Category</th>
         <th>Budgeted</th>
         <th>Spending</th>
+        <th>Available</th>
     </tr>
     </thead>
     <tbody>
@@ -22,6 +25,7 @@
             <td>${record.category.name}</td>
             <td>${record.budgetedAmount}</td>
             <td>${record.spending}</td>
+            <td>${record.available}</td>
         </tr>
     </c:forEach>
     </tbody>

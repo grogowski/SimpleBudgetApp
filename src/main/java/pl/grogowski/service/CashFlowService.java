@@ -6,7 +6,6 @@ import pl.grogowski.model.CashFlow;
 import pl.grogowski.model.Category;
 import pl.grogowski.model.Record;
 import pl.grogowski.repository.CashFlowRepository;
-import pl.grogowski.repository.UserRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,10 +16,10 @@ public class CashFlowService {
     @Autowired
     CashFlowRepository cashFlowRepository;
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
-    public BigDecimal getCashOutflowForGivenRecord(String userEmail, Record record) {
-        List<CashFlow> outflows = getCashFlowForGivenCategoryAndDate(userEmail, record.getMonth(), record.getYear(), record.getCategory());
+    public BigDecimal getSpendingForGivenRecord(String userEmail, Record record) {
+        List<CashFlow> outflows = getCashFlowsForGivenCategoryAndMonth(userEmail, record.getDate(), record.getCategory());
         BigDecimal sum = new BigDecimal(0);
         for (CashFlow cashFlow:outflows) {
             sum = sum.add(cashFlow.getAmount());
@@ -28,10 +27,44 @@ public class CashFlowService {
         return sum;
     }
 
-    private List<CashFlow> getCashFlowForGivenCategoryAndDate(String userEmail, Integer month, Integer year, Category c) {
+    public BigDecimal getSpendingTillDate(String userEmail, Record record) {
+        List<CashFlow> outflows = getCashFlowsTillGivenDate(userEmail, record.getDate(), record.getCategory());
+        BigDecimal sum = new BigDecimal(0);
+        for (CashFlow cashFlow:outflows) {
+            sum = sum.add(cashFlow.getAmount());
+        }
+        return sum;
+    }
+
+    public BigDecimal getUserOutcome(String userEmail) {
+        List<CashFlow> outflows = cashFlowRepository.queryAllCashFlowsByUser(userService.getUserByEmail(userEmail), false);
+        BigDecimal outcome = new BigDecimal(0);
+        for (CashFlow c:outflows) {
+            outcome = outcome.add(c.getAmount());
+        }
+        return outcome;
+    }
+
+    public BigDecimal getUserIncome(String userEmail) {
+        List<CashFlow> inflows = cashFlowRepository.queryAllCashFlowsByUser(userService.getUserByEmail(userEmail), true);
+        BigDecimal income = new BigDecimal(0);
+        for (CashFlow c:inflows) {
+            income = income.add(c.getAmount());
+        }
+        return income;
+    }
+
+    private List<CashFlow> getCashFlowsForGivenCategoryAndMonth(String userEmail, LocalDate date, Category c) {
         return cashFlowRepository.queryFindByUserAndByCategoryAndByDate(
-                userRepository.findByEmail(userEmail), c,
-                LocalDate.of(year, month, 1),
-                LocalDate.of(year, month, LocalDate.of(year, month, 1).lengthOfMonth()));
+                userService.getUserByEmail(userEmail), c,
+                date,
+                LocalDate.of(date.getYear(), date.getMonthValue(), date.lengthOfMonth()));
+    }
+
+    private List<CashFlow> getCashFlowsTillGivenDate(String userEmail, LocalDate date, Category c) {
+        return cashFlowRepository.queryFindByUserAndByCategoryAndByDate(
+                userService.getUserByEmail(userEmail), c,
+                LocalDate.of(2000, 1, 1),
+                LocalDate.of(date.getYear(), date.getMonthValue(), date.lengthOfMonth()));
     }
 }

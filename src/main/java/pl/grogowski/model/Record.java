@@ -20,12 +20,13 @@ public class Record {
     @Column(name = "budgeted_amount")
     private BigDecimal budgetedAmount;
 
+    private LocalDate date;
+
     @Transient
     private BigDecimal spending;
 
-    private int month;
-
-    private int year;
+    @Transient
+    private BigDecimal available;
 
     public Long getId() {
         return id;
@@ -59,20 +60,12 @@ public class Record {
         this.user = user;
     }
 
-    public int getMonth() {
-        return month;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public BigDecimal getSpending() {
@@ -81,5 +74,13 @@ public class Record {
 
     public void setSpending(BigDecimal spending) {
         this.spending = spending;
+    }
+
+    public BigDecimal getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(BigDecimal available) {
+        this.available = available;
     }
 }
