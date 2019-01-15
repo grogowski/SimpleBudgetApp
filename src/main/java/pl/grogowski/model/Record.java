@@ -2,6 +2,7 @@ package pl.grogowski.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "records")
@@ -18,6 +19,10 @@ public class Record {
 
     @Column(name = "budgeted_amount")
     private BigDecimal budgetedAmount;
+
+    private int month;
+
+    private int year;
 
     public Long getId() {
         return id;
@@ -49,5 +54,21 @@ public class Record {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 }

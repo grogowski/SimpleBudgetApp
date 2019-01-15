@@ -23,7 +23,7 @@ public class LoginController {
     @RequestMapping(path = "", method = RequestMethod.GET)
     public String getLoginData(Model model) {
         model.addAttribute("user", new User());
-        return "login";
+        return "/login/login";
     }
 
     @RequestMapping(path = "", method = RequestMethod.POST)
@@ -32,25 +32,25 @@ public class LoginController {
             session.setAttribute("userEmail", email);
             return "redirect: /user/main";
         }
-        return "login";
+        return "/login/login";
     }
 
     @RequestMapping(path = "register", method = RequestMethod.GET)
     public String getRegisterData(Model model) {
         model.addAttribute("user", new User());
-        return "register";
+        return "/login/register";
     }
 
     @RequestMapping(path = "register", method = RequestMethod.POST)
     public String register(@Valid User user, BindingResult result, @RequestParam String repeated) {
         if (result.hasErrors()||!user.getPassword().equals(repeated)) {
-            return "register";
+            return "/login/register";
         }
         if (!userService.userExists(user.getEmail())) {
             userService.registerUser(user);
             return "redirect: /";
         }
-        return "register";
+        return "/login/register";
     }
 
 }

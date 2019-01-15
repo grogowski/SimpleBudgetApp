@@ -1,0 +1,11 @@
+insert into categories (name, user_id) values ("To be Budgeted", null);
+insert into categories (name, user_id) values ("Rent/Mortgage", null);
+insert into categories (name, user_id) values ("Electric", null);
+insert into categories (name, user_id) values ("Water", null);
+insert into categories (name, user_id) values ("Internet", null);
+insert into categories (name, user_id) values ("Groceries", null);
+insert into categories (name, user_id) values ("Transportation", null);
+insert into categories (name, user_id) values ("Clothing", null);
+insert into categories (name, user_id) values ("Medical", null);
+insert into categories (name, user_id) values ("Gifts", null);
+insert into categories (name, user_id) values ("Stuff I forgot to budget for", null);
