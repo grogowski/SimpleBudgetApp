@@ -2,6 +2,7 @@ package pl.grogowski.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,7 +20,7 @@ public class CashFlow {
 
     private BigDecimal amount;
 
-    private LocalDateTime date;
+    private LocalDate date;
 
     private boolean inflow;
 
@@ -47,11 +48,11 @@ public class CashFlow {
         this.amount = amount;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

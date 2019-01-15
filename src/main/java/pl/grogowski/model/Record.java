@@ -20,6 +20,9 @@ public class Record {
     @Column(name = "budgeted_amount")
     private BigDecimal budgetedAmount;
 
+    @Transient
+    private BigDecimal spending;
+
     private int month;
 
     private int year;
@@ -70,5 +73,13 @@ public class Record {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public BigDecimal getSpending() {
+        return spending;
+    }
+
+    public void setSpending(BigDecimal spending) {
+        this.spending = spending;
     }
 }

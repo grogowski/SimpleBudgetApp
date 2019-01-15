@@ -8,7 +8,6 @@ import pl.grogowski.repository.RecordRepository;
 import pl.grogowski.repository.UserRepository;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,26 +20,31 @@ public class RecordService {
     RecordRepository recordRepository;
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    CashFlowService cashFlowService;
 
-    public List<Record> getRecordsForUserGivenDate(String userEmail, LocalDate date) {
-        List<Record> records = recordRepository.queryFindByUserAndByMonthAndByYear(userRepository.findByEmail(userEmail), date.getMonthValue(), date.getYear());
+    public List<Record> getRecordsForUserGivenDate(String userEmail, Integer month, Integer year) {
+        List<Record> records = recordRepository.queryFindByUserAndByMonthAndByYear(userRepository.findByEmail(userEmail), month, year);
         if (records.isEmpty()) {
             List<Category> categories = categoryService.getCategoriesForUser(userEmail);
-            createBlankRecordsForUser(userEmail, date, categories);
-            records = recordRepository.queryFindByUserAndByMonthAndByYear(userRepository.findByEmail(userEmail), date.getMonthValue(), date.getYear());
+            createBlankRecordsForUser(userEmail, month, year, categories);
+            records = recordRepository.queryFindByUserAndByMonthAndByYear(userRepository.findByEmail(userEmail), month, year);
+        }
+        for (Record r : records) {
+            r.setSpending(cashFlowService.getCashOutflowForGivenRecord(userEmail, r));
         }
         return records;
     }
 
-    private void createBlankRecordsForUser(String userEmail, LocalDate date, List<Category> categories) {
+    private void createBlankRecordsForUser(String userEmail, Integer month, Integer year, List<Category> categories) {
         List<Record> toBePersisted = new ArrayList<>();
-        for (Category c: categories) {
+        for (Category c : categories) {
             Record newRecord = new Record();
             newRecord.setCategory(c);
             newRecord.setUser(userRepository.findByEmail(userEmail));
             newRecord.setBudgetedAmount(new BigDecimal(0));
-            newRecord.setMonth(date.getMonthValue());
-            newRecord.setYear(date.getYear());
+            newRecord.setMonth(month);
+            newRecord.setYear(year);
             toBePersisted.add(newRecord);
         }
         recordRepository.save(toBePersisted);
