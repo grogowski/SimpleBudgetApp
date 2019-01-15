@@ -13,7 +13,7 @@ public class UserService {
 
     public boolean authenticate(String email, String password) {
         User fromDatabase = userRepository.findByEmail(email);
-        if (fromDatabase!=null){
+        if (fromDatabase != null) {
 //            if(fromDatabase.getPassword().equals(password)){
 //                return true;
 //            }
@@ -29,7 +29,7 @@ public class UserService {
     }
 
     public boolean userExists(String email) {
-        return userRepository.findByEmail(email)!=null;
+        return userRepository.findByEmail(email) != null;
     }
 
     public void registerUser(User user) {

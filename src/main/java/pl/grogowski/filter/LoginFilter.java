@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter("/budget/*")
+@WebFilter("/user/*")
 public class LoginFilter implements Filter {
     public void destroy() {
     }

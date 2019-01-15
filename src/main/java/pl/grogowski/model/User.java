@@ -4,7 +4,6 @@ import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -19,9 +18,6 @@ public class User {
     private String email;
 
     private String password;
-
-    @OneToMany
-    private List<Budget> budgets;
 
     public Long getId() {
         return id;
@@ -47,11 +43,4 @@ public class User {
         this.password = password;
     }
 
-    public List<Budget> getBudgets() {
-        return budgets;
-    }
-
-    public void setBudgets(List<Budget> budgets) {
-        this.budgets = budgets;
-    }
 }

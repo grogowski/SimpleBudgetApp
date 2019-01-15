@@ -13,6 +13,9 @@ public class Record {
     @ManyToOne
     private Category category;
 
+    @ManyToOne
+    private User user;
+
     @Column(name = "budgeted_amount")
     private BigDecimal budgetedAmount;
 
@@ -38,5 +41,13 @@ public class Record {
 
     public void setBudgetedAmount(BigDecimal budgetedAmount) {
         this.budgetedAmount = budgetedAmount;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

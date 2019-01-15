@@ -14,6 +14,9 @@ public class CashFlow {
     @ManyToOne
     private Category category;
 
+    @ManyToOne
+    private User user;
+
     private BigDecimal amount;
 
     private LocalDateTime date;
@@ -58,5 +61,13 @@ public class CashFlow {
 
     public void setInflow(boolean inflow) {
         this.inflow = inflow;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
