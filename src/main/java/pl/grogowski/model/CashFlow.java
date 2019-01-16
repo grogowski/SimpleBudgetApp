@@ -1,6 +1,9 @@
 package pl.grogowski.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -17,8 +20,11 @@ public class CashFlow {
     @ManyToOne
     private User user;
 
+    @NotNull
     private BigDecimal amount;
 
+    @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
     private boolean inflow;
@@ -34,7 +40,7 @@ public class CashFlow {
     public Category getCategory() {
         if (category == null) {
             Category c = new Category();
-            c.setName("To be Budgeted");
+            c.setName("Income");
             return c;
         }
         return category;
@@ -75,6 +81,21 @@ public class CashFlow {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public BigDecimal getIn() {
+        if (inflow) {
+            return getAmount();
+        }
+        return null;
+    }
+
+    public BigDecimal getOut() {
+        if (inflow) {
+            return null;
+        }
+        return getAmount();
+    }
+
 
 
 }

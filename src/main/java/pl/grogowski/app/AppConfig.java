@@ -16,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import pl.grogowski.converter.CategoryConverter;
 import pl.grogowski.converter.UserConverter;
 
 import javax.persistence.EntityManagerFactory;
@@ -51,11 +52,12 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         return tm;
     }
 
-    @Bean(name="localeResolver")
+    @Bean(name = "localeResolver")
     public LocaleContextResolver getLocaleContextResolver() {
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
-        localeResolver.setDefaultLocale(new Locale("pl","PL"));
-        return localeResolver; }
+        localeResolver.setDefaultLocale(new Locale("pl", "PL"));
+        return localeResolver;
+    }
 
     @Bean
     public Validator validator() {
@@ -65,11 +67,17 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(getUserConverter());
+        registry.addConverter(getCategoryConverter());
     }
 
     @Bean
     public UserConverter getUserConverter() {
         return new UserConverter();
+    }
+
+    @Bean
+    public CategoryConverter getCategoryConverter() {
+        return new CategoryConverter();
     }
 
     @Override

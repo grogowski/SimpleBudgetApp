@@ -13,6 +13,7 @@ import pl.grogowski.service.UserService;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.time.LocalDate;
 
 @Controller
 @SessionAttributes("count")
@@ -30,7 +31,8 @@ public class LoginController {
     public String login(@RequestParam String email, @RequestParam String password, HttpSession session) {
         if (userService.authenticate(email, password)) {
             session.setAttribute("userEmail", email);
-            return "redirect: /user/main";
+            LocalDate presentDate = LocalDate.now();
+            return "redirect: /user/main/default";
         }
         return "/login/login";
     }

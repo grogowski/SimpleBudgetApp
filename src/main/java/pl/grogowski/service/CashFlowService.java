@@ -21,7 +21,7 @@ public class CashFlowService {
     public BigDecimal getSpendingForGivenRecord(String userEmail, Record record) {
         List<CashFlow> outflows = getCashFlowsForGivenCategoryAndMonth(userEmail, record.getDate(), record.getCategory());
         BigDecimal sum = new BigDecimal(0);
-        for (CashFlow cashFlow:outflows) {
+        for (CashFlow cashFlow : outflows) {
             sum = sum.add(cashFlow.getAmount());
         }
         return sum;
@@ -30,7 +30,7 @@ public class CashFlowService {
     public BigDecimal getSpendingTillDate(String userEmail, Record record) {
         List<CashFlow> outflows = getCashFlowsTillGivenDate(userEmail, record.getDate(), record.getCategory());
         BigDecimal sum = new BigDecimal(0);
-        for (CashFlow cashFlow:outflows) {
+        for (CashFlow cashFlow : outflows) {
             sum = sum.add(cashFlow.getAmount());
         }
         return sum;
@@ -39,7 +39,7 @@ public class CashFlowService {
     public BigDecimal getUserOutcome(String userEmail) {
         List<CashFlow> outflows = cashFlowRepository.queryAllCashFlowsByUser(userService.getUserByEmail(userEmail), false);
         BigDecimal outcome = new BigDecimal(0);
-        for (CashFlow c:outflows) {
+        for (CashFlow c : outflows) {
             outcome = outcome.add(c.getAmount());
         }
         return outcome;
@@ -48,7 +48,7 @@ public class CashFlowService {
     public BigDecimal getUserIncome(String userEmail) {
         List<CashFlow> inflows = cashFlowRepository.queryAllCashFlowsByUser(userService.getUserByEmail(userEmail), true);
         BigDecimal income = new BigDecimal(0);
-        for (CashFlow c:inflows) {
+        for (CashFlow c : inflows) {
             income = income.add(c.getAmount());
         }
         return income;
@@ -66,5 +66,19 @@ public class CashFlowService {
                 userService.getUserByEmail(userEmail), c,
                 LocalDate.of(2000, 1, 1),
                 LocalDate.of(date.getYear(), date.getMonthValue(), date.lengthOfMonth()));
+    }
+
+    public List<CashFlow> getAllCashFlowsForUser(String userEmail) {
+        return cashFlowRepository.findByUser(userService.getUserByEmail(userEmail));
+    }
+
+    public void persist(CashFlow cashFlow, String userEmail) {
+        cashFlow.setUser(userService.getUserByEmail(userEmail));
+        cashFlow.setInflow(false);
+        if (cashFlow.getCategory().getName().equals("Income")) {
+            cashFlow.setCategory(null);
+            cashFlow.setInflow(true);
+        }
+        cashFlowRepository.save(cashFlow);
     }
 }

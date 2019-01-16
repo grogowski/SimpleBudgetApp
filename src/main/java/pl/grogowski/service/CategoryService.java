@@ -3,8 +3,11 @@ package pl.grogowski.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.grogowski.model.Category;
+import pl.grogowski.model.Record;
 import pl.grogowski.repository.CategoryRepository;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +17,8 @@ public class CategoryService {
     CategoryRepository categoryRepository;
     @Autowired
     UserService userService;
+    @Autowired
+    RecordService recordService;
 
     public List<Category> getCategoriesForUser(String userEmail) {
         List<Category> categories = categoryRepository.findByUser(userService.getUserByEmail(userEmail));
@@ -34,5 +39,25 @@ public class CategoryService {
             toBePersisted.add(newCategory);
         }
         categoryRepository.save(toBePersisted);
+    }
+
+    public void addCategory(String userEmail, String newCategoryName) {
+        Category newCategory = new Category();
+        newCategory.setUser(userService.getUserByEmail(userEmail));
+        newCategory.setName(newCategoryName);
+        categoryRepository.save(newCategory);
+        for (LocalDate date:recordService.getExistingRecordsDates(userEmail)) {
+            Record newRecord = new Record();
+            newRecord.setUser(userService.getUserByEmail(userEmail));
+            newRecord.setCategory(newCategory);
+            newRecord.setBudgetedAmount(new BigDecimal(0));
+            newRecord.setDate(date);
+        }
+    }
+
+    public void editCategory(String categoryId, String newName) {
+        Category toBeEdited = categoryRepository.findOne(Long.parseLong(categoryId));
+        toBeEdited.setName(newName);
+        categoryRepository.save(toBeEdited);
     }
 }
