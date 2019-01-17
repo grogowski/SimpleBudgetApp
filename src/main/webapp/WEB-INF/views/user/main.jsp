@@ -4,24 +4,44 @@
 <html>
 <head>
     <title>Budget</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/js/budget.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-<h2>Total budgeted: ${budgeted}</h2>
-<h2>Balance: ${balance}</h2>
-<select name="months" id="monthSelect">
-    <c:forEach var="month" items="${availableMonths}">
-        <option value="${month.key}">${month.value}</option>
-    </c:forEach>
-</select>
-<form method="post">
-    <table>
-        <thead>
-        <tr>
-            <th colspan="4">Records</th>
-        </tr>
-        <tr>
-            <th colspan="4"><input type="submit" value="Update"></th>
-        </tr>
+<ul class="nav nav-pills nav-fill">
+    <li class="nav-item">
+        <a class="nav-link active" href="/user/main/default">Budget view</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/user/cashflows">Transactions view</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/user/logout">Logout</a>
+    </li>
+</ul>
+<div class="row">
+    <div class="col-sm-3">
+        <select name="months" id="monthSelect">
+            <c:forEach var="month" items="${availableMonths}">
+                <option value="${month.key}">${month.value}</option>
+            </c:forEach>
+        </select></div>
+    <div class="col-sm-3">
+        <h5>Total budgeted this month: ${budgeted}</h5>
+    </div>
+    <div class="col-sm-3">
+        <div><h5>Present account balance: ${balance}</h5></div>
+    </div>
+    <div class="col-sm-3">
+        <input form="bigForm" type="submit" class="btn btn-primary" value="Save changes">
+    </div>
+</div>
+
+<form id="bigForm" method="post">
+    <table class="table table-bordered table-sm">
+        <thead class="thead-light">
         <tr>
             <th>Category</th>
             <th>Budgeted</th>
@@ -32,9 +52,9 @@
         <tbody>
         <c:forEach var="record" items="${records}">
             <tr>
-                <td><input class="edit" type="text" value="${record.category.name}"
+                <td><input class="edit form-control" type="text" value="${record.category.name}"
                            name="category-${record.category.id}"></td>
-                <td><input class="edit" type="number" step="0.01" min="0" value="${record.budgetedAmount}"
+                <td><input class="edit form-control" type="number" step="0.01" min="0" value="${record.budgetedAmount}"
                            name="record-${record.id}"></td>
                 <td>${record.spending}</td>
                 <td>${record.available}</td>
@@ -43,7 +63,11 @@
         </tbody>
     </table>
 </form>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="/js/budget.js"></script>
+<form:form modelAttribute="category" method="post" id="addCategoryForm" action="/user/addCategory">
+    <form:input type="text" path="name"/>
+    <input class="btn btn-primary" type="submit" value="Add">
+    <input type="hidden" name="month" value="${month}">
+</form:form>
+<button id="addCategoryButton" class="btn btn-primary">Add Category</button>
 </body>
 </html>

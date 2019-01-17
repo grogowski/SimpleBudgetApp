@@ -81,5 +81,9 @@ public class RecordService {
         recordRepository.save(toBeEdited);
     }
 
+    public void addRecord(Record r) {
+        recordRepository.save(r);
+    }
+
 
 }

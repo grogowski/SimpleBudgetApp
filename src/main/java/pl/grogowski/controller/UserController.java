@@ -14,6 +14,7 @@ import pl.grogowski.service.RecordService;
 import pl.grogowski.service.UserService;
 import pl.grogowski.util.BudgetUtil;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -62,6 +63,8 @@ public class UserController {
         model.addAttribute("records", records);
         model.addAttribute("budgeted", totalBudgeted);
         model.addAttribute("balance", balance);
+        model.addAttribute("category", new Category());
+        model.addAttribute("month", month);
         return "/user/main";
     }
 
@@ -102,6 +105,22 @@ public class UserController {
             cashFlowService.persist(cashFlow, userEmail);
         }
         return "redirect: /user/cashflows";
+    }
+
+    @RequestMapping(path = "/addCategory", method = RequestMethod.POST)
+    public String addCategory(@Valid Category category, BindingResult result,
+                              @SessionAttribute String userEmail,
+                              @RequestParam String month) {
+        if (!result.hasErrors()) {
+            categoryService.addCategory(userEmail, category);
+        }
+        return "redirect: /user/main/"+month;
+    }
+
+    @RequestMapping(path = "/logout", method = RequestMethod.GET)
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect: /";
     }
 
 }

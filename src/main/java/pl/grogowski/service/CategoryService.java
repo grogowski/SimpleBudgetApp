@@ -41,10 +41,8 @@ public class CategoryService {
         categoryRepository.save(toBePersisted);
     }
 
-    public void addCategory(String userEmail, String newCategoryName) {
-        Category newCategory = new Category();
+    public void addCategory(String userEmail, Category newCategory) {
         newCategory.setUser(userService.getUserByEmail(userEmail));
-        newCategory.setName(newCategoryName);
         categoryRepository.save(newCategory);
         for (LocalDate date:recordService.getExistingRecordsDates(userEmail)) {
             Record newRecord = new Record();
@@ -52,6 +50,7 @@ public class CategoryService {
             newRecord.setCategory(newCategory);
             newRecord.setBudgetedAmount(new BigDecimal(0));
             newRecord.setDate(date);
+            recordService.addRecord(newRecord);
         }
     }
 

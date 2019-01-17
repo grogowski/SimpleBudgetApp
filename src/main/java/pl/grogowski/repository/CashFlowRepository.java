@@ -17,5 +17,6 @@ public interface CashFlowRepository extends JpaRepository<CashFlow, Long> {
     @Query("select c from CashFlow c where c.user =?1 and c.inflow = ?2")
     List<CashFlow> queryAllCashFlowsByUser(User user, Boolean inflow);
 
+    @Query("select c from CashFlow c where c.user =?1 order by c.date desc ")
     List<CashFlow> findByUser(User user);
 }
