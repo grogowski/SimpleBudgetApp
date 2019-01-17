@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
@@ -18,17 +19,6 @@
     <link href="css/sb-admin.css" rel="stylesheet">
 </head>
 <body class="bg-dark">
-<%--<form:form modelAttribute="user" method="post">--%>
-    <%--<label>Email</label><br>--%>
-    <%--<form:input path="email"/><br>--%>
-    <%--<form:errors path="email"/><br>--%>
-    <%--<label>Password</label><br>--%>
-    <%--<form:input type="password" path="password"/><br>--%>
-    <%--<label>Repeat password</label><br>--%>
-    <%--<input type="password" name="repeated"/><br>--%>
-    <%--<input type="submit" value="Register">--%>
-<%--</form:form>--%>
-
 <div class="container">
     <div class="card card-register mx-auto mt-5">
         <div class="card-header">Register an Account</div>
@@ -56,6 +46,15 @@
                         </div>
                     </div>
                 </div>
+                <c:if test="${not empty errorLength}">
+                    <div class="alert alert-danger">${errorLength}</div>
+                </c:if>
+                <c:if test="${not empty errorMatch}">
+                    <div class="alert alert-danger">${errorMatch}</div>
+                </c:if>
+                <c:if test="${not empty errorMail}">
+                    <div class="alert alert-danger">${errorMail}</div>
+                </c:if>
                 <input type="submit" value="Register" class="btn btn-primary btn-block">
             </form:form>
         </div>

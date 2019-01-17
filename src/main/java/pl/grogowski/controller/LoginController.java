@@ -22,18 +22,18 @@ public class LoginController {
     UserService userService;
 
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public String getLoginData(Model model) {
-        model.addAttribute("user", new User());
+    public String getLoginData() {
         return "/login/login";
     }
 
     @RequestMapping(path = "", method = RequestMethod.POST)
-    public String login(@RequestParam String email, @RequestParam String password, HttpSession session) {
+    public String login(@RequestParam String email, @RequestParam String password, HttpSession session, Model model) {
         if (userService.authenticate(email, password)) {
             session.setAttribute("userEmail", email);
             LocalDate presentDate = LocalDate.now();
             return "redirect: /user/main/default";
         }
+        model.addAttribute("error", "Incorrect login data");
         return "/login/login";
     }
 
@@ -44,15 +44,26 @@ public class LoginController {
     }
 
     @RequestMapping(path = "register", method = RequestMethod.POST)
-    public String register(@Valid User user, BindingResult result, @RequestParam String repeated) {
-        if (result.hasErrors()||!user.getPassword().equals(repeated)) {
-            return "/login/register";
+    public String register(@Valid User user, BindingResult result, @RequestParam String repeated, Model model) {
+        boolean errorsPresent = false;
+        if (result.hasErrors()) {
+            model.addAttribute("errorLength", "Password must be between 6 and 24 characters");
+            errorsPresent = true;
         }
-        if (!userService.userExists(user.getEmail())) {
+        if (!user.getPassword().equals(repeated)) {
+            model.addAttribute("errorMatch", "Password and repeated password do not match");
+            errorsPresent = true;
+        }
+        if (userService.userExists(user.getEmail())) {
+            model.addAttribute("errorMail", "Account with this email already exists");
+            errorsPresent = true;
+        }
+        if(errorsPresent) {
+            return "/login/register";
+        } else {
             userService.registerUser(user);
             return "redirect: /";
         }
-        return "/login/register";
     }
 
 }

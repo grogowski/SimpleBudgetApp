@@ -63,11 +63,13 @@
         </tbody>
     </table>
 </form>
-<form:form modelAttribute="category" method="post" id="addCategoryForm" action="/user/addCategory">
-    <form:input type="text" path="name"/>
-    <input class="btn btn-primary" type="submit" value="Add">
-    <input type="hidden" name="month" value="${month}">
+<div>
+<form:form class="form-inline" modelAttribute="category" method="post" id="addCategoryForm" action="/user/addCategory">
+        <form:input class="form-control" type="text" path="name" placeholder="New category name"/>
+        <input class="btn btn-primary" type="submit" value="Add Category">
+        <input type="hidden" name="month" value="${month}">
 </form:form>
+</div>
 <button id="addCategoryButton" class="btn btn-primary">Add Category</button>
 </body>
 </html>

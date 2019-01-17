@@ -18,6 +18,7 @@ public class User {
     @Size(max = 50)
     private String email;
 
+    @Size(min=6, max = 24)
     private String password;
 
     public Long getId() {

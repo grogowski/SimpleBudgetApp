@@ -1,5 +1,7 @@
 package pl.grogowski.model;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
@@ -10,7 +12,8 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 2, max = 50)
+    @NotBlank
+    @Size(max = 50)
     private String name;
 
     @ManyToOne
