@@ -83,7 +83,7 @@ public class UserController {
                 }
             }
         }
-        return "redirect: /user/main/"+month;
+        return "redirect: /user/main/" + month;
     }
 
     @RequestMapping(path = "/cashflows", method = RequestMethod.GET)
@@ -103,6 +103,8 @@ public class UserController {
     public String addCashFlow(@Valid CashFlow cashFlow, BindingResult result, @SessionAttribute String userEmail) {
         if (!result.hasErrors()) {
             cashFlowService.persist(cashFlow, userEmail);
+        }  else if (result.getAllErrors().size()==1&&cashFlow.getCategory().getName().equals("Income")){
+            cashFlowService.persist(cashFlow, userEmail);
         }
         return "redirect: /user/cashflows";
     }
@@ -114,7 +116,7 @@ public class UserController {
         if (!result.hasErrors()) {
             categoryService.addCategory(userEmail, category);
         }
-        return "redirect: /user/main/"+month;
+        return "redirect: /user/main/" + month;
     }
 
     @RequestMapping(path = "/logout", method = RequestMethod.GET)
