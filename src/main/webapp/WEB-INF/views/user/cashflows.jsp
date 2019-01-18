@@ -21,27 +21,35 @@
         <a class="nav-link" href="/user/logout">Logout</a>
     </li>
 </ul>
-<table class="table table-bordered table-sm">
-    <thead class="thead-light">
-    <tr>
-        <th>Category</th>
-        <th>Date</th>
-        <th>Outflow</th>
-        <th>Inflow</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach var="cashFlow" items="${cashFlows}">
+<form id="bigForm" action="/user/editCashFlows" method="post">
+    <table class="table table-bordered table-sm">
+        <thead class="thead-light">
         <tr>
-            <td>${cashFlow.category.name}</td>
-            <td>${cashFlow.date}</td>
-            <td>${cashFlow.out}</td>
-            <td>${cashFlow.in}</td>
+            <th>Category</th>
+            <th>Date</th>
+            <th>Outflow</th>
+            <th>Inflow</th>
         </tr>
-    </c:forEach>
-    </tbody>
-</table>
-<form:form modelAttribute="cashFlow" method="post" id="addCashFlow">
+        </thead>
+        <tbody>
+        <c:forEach var="cashFlow" items="${cashFlows}">
+            <tr>
+                <td><span class="${cashFlow.category.name == 'Income' ? '' : 'editableCategory'}"
+                          id="category-${cashFlow.id}">${cashFlow.category.name}</span></td>
+                <td><span class="editableDate"
+                          id="date-${cashFlow.id}">${cashFlow.date}</span></td>
+                <td><span class="${cashFlow.category.name == 'Income' ? '' : 'editableOut'}"
+                          id="out-${cashFlow.id}">${cashFlow.out}</span></td>
+                <td><span class="${cashFlow.category.name == 'Income' ? 'editableIn' : ''}"
+                          id="in-${cashFlow.id}">${cashFlow.in}</span></td>
+                <td><button id="addTransaction" class="btn btn-primary">Add transaction</button></td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+    <input form="bigForm" type="submit" class="btn btn-primary" value="Save changes">
+</form>
+<form:form modelAttribute="cashFlow" method="post" id="addCashFlow" action="/user/addCashFlow">
     <form:select path="category">
         <form:options items="${categories}" itemValue="id" itemLabel="name"/>
     </form:select>

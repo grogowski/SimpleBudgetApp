@@ -99,12 +99,31 @@ public class UserController {
         return "user/cashflows";
     }
 
-    @RequestMapping(path = "/cashflows", method = RequestMethod.POST)
+    @RequestMapping(path = "/addCashFlow", method = RequestMethod.POST)
     public String addCashFlow(@Valid CashFlow cashFlow, BindingResult result, @SessionAttribute String userEmail) {
         if (!result.hasErrors()) {
             cashFlowService.persist(cashFlow, userEmail);
         }  else if (result.getAllErrors().size()==1&&cashFlow.getCategory().getName().equals("Income")){
             cashFlowService.persist(cashFlow, userEmail);
+        }
+        return "redirect: /user/cashflows";
+    }
+
+    @RequestMapping(path = "/editCashFlows", method = RequestMethod.POST)
+    public String editCashFlows(@RequestParam Map<String, String> parameters, @SessionAttribute String userEmail) {
+        for (String param : parameters.keySet()) {
+            String parts[] = param.split("-");
+            CashFlow cashFlow = cashFlowService.getCashFlowById(parts[1]);
+            if (parts[0].equals("category")) {
+                cashFlow.setCategory(categoryService.getCategoryById(parameters.get(param)));
+            } else if (parts[0].equals("date")){
+                cashFlow.setDate(LocalDate.parse(parameters.get(param)));
+            } else if (parts[0].equals("in")) {
+                cashFlow.setAmount(BigDecimal.valueOf(Double.parseDouble(parameters.get(param))));
+            } else if (parts[0].equals("out")) {
+                cashFlow.setAmount(BigDecimal.valueOf(Double.parseDouble(parameters.get(param))));
+            }
+            cashFlowService.update(cashFlow);
         }
         return "redirect: /user/cashflows";
     }

@@ -80,4 +80,12 @@ public class CashFlowService {
         }
         cashFlowRepository.save(cashFlow);
     }
+
+    public CashFlow getCashFlowById(String id) {
+        return cashFlowRepository.findOne(Long.parseLong(id));
+    }
+
+    public void update(CashFlow cashFlow) {
+        cashFlowRepository.save(cashFlow);
+    }
 }

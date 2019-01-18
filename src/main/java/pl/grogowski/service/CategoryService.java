@@ -59,4 +59,8 @@ public class CategoryService {
         toBeEdited.setName(newName);
         categoryRepository.save(toBeEdited);
     }
+
+    public Category getCategoryById(String id) {
+        return categoryRepository.findOne(Long.parseLong(id));
+    }
 }
