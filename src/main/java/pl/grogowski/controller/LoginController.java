@@ -46,7 +46,7 @@ public class LoginController {
     @RequestMapping(path = "register", method = RequestMethod.POST)
     public String register(@Valid User user, BindingResult result, @RequestParam String repeated, Model model) {
         boolean errorsPresent = false;
-        if (result.hasErrors()) {
+        if (user.getPassword().length()<6||user.getPassword().length()>24) {
             model.addAttribute("errorLength", "Password must be between 6 and 24 characters");
             errorsPresent = true;
         }

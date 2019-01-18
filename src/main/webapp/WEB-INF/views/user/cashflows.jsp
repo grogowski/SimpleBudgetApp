@@ -42,7 +42,7 @@
                           id="out-${cashFlow.id}">${cashFlow.out}</span></td>
                 <td><span class="${cashFlow.category.name == 'Income' ? 'editableIn' : ''}"
                           id="in-${cashFlow.id}">${cashFlow.in}</span></td>
-                <td><button id="addTransaction" class="btn btn-primary">Add transaction</button></td>
+                <%--<td><button id="addTransaction" class="btn btn-primary">Add transaction</button></td>--%>
             </tr>
         </c:forEach>
         </tbody>

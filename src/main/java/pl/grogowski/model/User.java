@@ -1,6 +1,7 @@
 package pl.grogowski.model;
 
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -18,7 +19,7 @@ public class User {
     @Size(max = 50)
     private String email;
 
-    @Size(min=6, max = 24)
+    @NotBlank
     private String password;
 
     public Long getId() {
