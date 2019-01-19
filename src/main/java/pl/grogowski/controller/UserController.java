@@ -103,7 +103,7 @@ public class UserController {
     public String addCashFlow(@Valid CashFlow cashFlow, BindingResult result, @SessionAttribute String userEmail) {
         if (!result.hasErrors()) {
             cashFlowService.persist(cashFlow, userEmail);
-        }  else if (result.getAllErrors().size()==1&&cashFlow.getCategory().getName().equals("Income")){
+        } else if (result.getAllErrors().size() == 1 && cashFlow.getCategory().getName().equals("Income")) {
             cashFlowService.persist(cashFlow, userEmail);
         }
         return "redirect: /user/cashflows";
@@ -116,7 +116,7 @@ public class UserController {
             CashFlow cashFlow = cashFlowService.getCashFlowById(parts[1]);
             if (parts[0].equals("category")) {
                 cashFlow.setCategory(categoryService.getCategoryById(parameters.get(param)));
-            } else if (parts[0].equals("date")){
+            } else if (parts[0].equals("date")) {
                 cashFlow.setDate(LocalDate.parse(parameters.get(param)));
             } else if (parts[0].equals("in")) {
                 cashFlow.setAmount(BigDecimal.valueOf(Double.parseDouble(parameters.get(param))));
@@ -143,5 +143,12 @@ public class UserController {
         session.invalidate();
         return "redirect: /";
     }
+
+    @RequestMapping(path = "/deleteCashFlow/{cashFlowId}", method = RequestMethod.GET)
+    public String deleteCashFlow(@PathVariable String cashFlowId) {
+        cashFlowService.delete(cashFlowId);
+        return "redirect: /user/cashflows";
+    }
+
 
 }

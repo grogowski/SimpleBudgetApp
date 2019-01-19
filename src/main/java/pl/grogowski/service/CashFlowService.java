@@ -88,4 +88,8 @@ public class CashFlowService {
     public void update(CashFlow cashFlow) {
         cashFlowRepository.save(cashFlow);
     }
+
+    public void delete(String cashFlowId) {
+        cashFlowRepository.delete(Long.parseLong(cashFlowId));
+    }
 }

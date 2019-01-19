@@ -29,6 +29,7 @@
             <th>Date</th>
             <th>Outflow</th>
             <th>Inflow</th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -42,7 +43,7 @@
                           id="out-${cashFlow.id}">${cashFlow.out}</span></td>
                 <td><span class="${cashFlow.category.name == 'Income' ? 'editableIn' : ''}"
                           id="in-${cashFlow.id}">${cashFlow.in}</span></td>
-                <%--<td><button id="addTransaction" class="btn btn-primary">Add transaction</button></td>--%>
+                <td><a href="/user/deleteCashFlow/${cashFlow.id}" class="btn btn-primary">Delete</a></td>
             </tr>
         </c:forEach>
         </tbody>
