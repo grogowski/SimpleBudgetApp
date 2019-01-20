@@ -11,4 +11,14 @@ $(document).ready(function () {
         $(this).hide();
         $("#addCategoryForm").show();
     });
+    $(".editableCategory").on("click", function () {
+        var name = $(this).attr("id");
+        $('<input>').attr("type", "text").attr("name", name).attr("value", $(this).text()).appendTo($(this).parent());
+        $(this).remove();
+    });
+    $(".editableAmount").on("click", function () {
+        var name = $(this).attr("id");
+        $('<input>').attr("type", "number").attr("min", 0).attr("step", 0.01).attr("name", name).attr("value", $(this).text()).appendTo($(this).parent());
+        $(this).remove();
+    });
 });

@@ -22,20 +22,17 @@
     </li>
 </ul>
 <div class="row">
-    <div class="col-sm-3">
+    <div class="col-sm-4">
         <select name="months" id="monthSelect">
             <c:forEach var="month" items="${availableMonths}">
                 <option value="${month.key}">${month.value}</option>
             </c:forEach>
         </select></div>
-    <div class="col-sm-3">
+    <div class="col-sm-4">
         <h5>Total budgeted this month: ${budgeted}</h5>
     </div>
-    <div class="col-sm-3">
+    <div class="col-sm-4">
         <div><h5>Present account balance: ${balance}</h5></div>
-    </div>
-    <div class="col-sm-3">
-        <input form="bigForm" type="submit" class="btn btn-primary" value="Save changes">
     </div>
 </div>
 
@@ -52,23 +49,25 @@
         <tbody>
         <c:forEach var="record" items="${records}">
             <tr>
-                <td><input class="edit form-control" type="text" value="${record.category.name}"
-                           name="category-${record.category.id}"></td>
-                <td><input class="edit form-control" type="number" step="0.01" min="0" value="${record.budgetedAmount}"
-                           name="record-${record.id}"></td>
-                <td>${record.spending}</td>
-                <td>${record.available}</td>
+                <td><span class="editableCategory"
+                          id="category-${record.category.id}">${record.category.name}</span></td>
+                <td><span class="editableAmount"
+                          id="amount-${record.id}">${record.budgetedAmount}</span></td>
+                <td><span>${record.spending}</span></td>
+                <td><span>${record.available}</span></td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
+    <input type="submit" class="btn btn-primary" value="Save changes">
 </form>
 <div>
-<form:form class="form-inline" modelAttribute="category" method="post" id="addCategoryForm" action="/user/addCategory">
+    <form:form class="form-inline" modelAttribute="category" method="post" id="addCategoryForm"
+               action="/user/addCategory">
         <form:input class="form-control" type="text" path="name" placeholder="New category name"/>
         <input class="btn btn-primary" type="submit" value="Add Category">
         <input type="hidden" name="month" value="${month}">
-</form:form>
+    </form:form>
 </div>
 <button id="addCategoryButton" class="btn btn-primary">Add Category</button>
 </body>

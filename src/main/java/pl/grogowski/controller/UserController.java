@@ -71,16 +71,17 @@ public class UserController {
     @RequestMapping(value = "/main/{month}", method = RequestMethod.POST)
     public String updated(@RequestParam Map<String, String> parameters, @PathVariable String month) {
         for (String param : parameters.keySet()) {
-            if (param.endsWith("changed")) {
-                if (param.startsWith("category")) {
-                    String categoryId = param.split("-")[1];
-                    String categoryNewName = parameters.get(param);
+            String parts[] = param.split("-");
+            if (parts[0].equals("category")) {
+                String categoryId = param.split("-")[1];
+                String categoryNewName = parameters.get(param);
+                if (!categoryNewName.isEmpty()) {
                     categoryService.editCategory(categoryId, categoryNewName);
-                } else {
-                    String recordId = param.split("-")[1];
-                    String budgetedAmount = parameters.get(param);
-                    recordService.editRecord(recordId, budgetedAmount);
                 }
+            } else if (parts[0].equals("amount")) {
+                String recordId = param.split("-")[1];
+                String budgetedAmount = parameters.get(param);
+                recordService.editRecord(recordId, budgetedAmount);
             }
         }
         return "redirect: /user/main/" + month;
