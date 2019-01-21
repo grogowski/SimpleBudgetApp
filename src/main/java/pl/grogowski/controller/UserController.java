@@ -1,5 +1,6 @@
 package pl.grogowski.controller;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -85,6 +87,27 @@ public class UserController {
             }
         }
         return "redirect: /user/main/" + month;
+    }
+
+    @RequestMapping(value = "/main/edit", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateMainView(@RequestParam String changed, @RequestParam String value, @RequestParam String id, @SessionAttribute String userEmail) {
+        if (changed.equals("category")) {
+            categoryService.editCategory(id, value);
+            return new JSONObject().put("categoryName", value).toString();
+        } else if (changed.equals("amount")){
+            recordService.editRecord(id, value);
+            Record record = recordService.getRecord(id, userEmail);
+            String totalBudgeted = recordService.getTotalBudgetedForGivenMonth(userEmail, record.getDate()).toString();
+            String available = record.getAvailable().toString();
+            String budgeted = record.getBudgetedAmount().toString();
+            Map<String, String> map = new HashMap<>();
+            map.put("budgeted", budgeted);
+            map.put("available", available);
+            map.put("totalBudgeted", totalBudgeted);
+            return new JSONObject(map).toString();
+        }
+        return new JSONObject().toString();
     }
 
     @RequestMapping(path = "/cashflows", method = RequestMethod.GET)

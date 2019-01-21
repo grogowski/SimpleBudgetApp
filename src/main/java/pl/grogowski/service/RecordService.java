@@ -39,12 +39,7 @@ public class RecordService {
             records = recordRepository.queryFindByUserAndByDate(userService.getUserByEmail(userEmail), date);
         }
         for (Record r : records) {
-            r.setSpending(cashFlowService.getSpendingForGivenRecord(userEmail, r));
-            if (date.isAfter(LocalDate.now())) {
-                r.setAvailable(r.getBudgetedAmount());
-            } else {
-                r.setAvailable(getBudgetedTillDateForUserAndCategory(userEmail, r).subtract(cashFlowService.getSpendingTillDate(userEmail, r)));
-            }
+            setTransientAttributes(r, userEmail);
         }
         return records;
     }
@@ -71,6 +66,15 @@ public class RecordService {
         recordRepository.save(toBePersisted);
     }
 
+    private void setTransientAttributes(Record r, String userEmail) {
+        r.setSpending(cashFlowService.getSpendingForGivenRecord(userEmail, r));
+        if (r.getDate().isAfter(LocalDate.now())) {
+            r.setAvailable(r.getBudgetedAmount());
+        } else {
+            r.setAvailable(getBudgetedTillDateForUserAndCategory(userEmail, r).subtract(cashFlowService.getSpendingTillDate(userEmail, r)));
+        }
+    }
+
     public List<LocalDate> getExistingRecordsDates(String userEmail) {
         return recordRepository.queryFindDistinctDatesByUser(userService.getUserByEmail(userEmail));
     }
@@ -83,6 +87,12 @@ public class RecordService {
 
     public void addRecord(Record r) {
         recordRepository.save(r);
+    }
+
+    public Record getRecord(String recordId, String userEmail) {
+        Record r = recordRepository.findOne(Long.parseLong(recordId));
+        setTransientAttributes(r, userEmail);
+        return r;
     }
 
 

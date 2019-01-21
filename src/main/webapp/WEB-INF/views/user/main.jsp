@@ -29,38 +29,35 @@
             </c:forEach>
         </select></div>
     <div class="col-sm-4">
-        <h5>Total budgeted this month: ${budgeted}</h5>
+        <h5 id="totalBudgeted">Total budgeted this month: ${budgeted}</h5>
     </div>
     <div class="col-sm-4">
         <div><h5>Present account balance: ${balance}</h5></div>
     </div>
 </div>
-
-<form id="bigForm" method="post">
-    <table class="table table-bordered table-sm">
-        <thead class="thead-light">
+<table class="table table-bordered table-sm">
+    <thead class="thead-light">
+    <tr>
+        <th>Category</th>
+        <th>Budgeted</th>
+        <th>Spending</th>
+        <th>Available</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach var="record" items="${records}">
         <tr>
-            <th>Category</th>
-            <th>Budgeted</th>
-            <th>Spending</th>
-            <th>Available</th>
+            <td><span class="editableCategory"
+                      id="${record.category.id}">${record.category.name}</span></td>
+            <td><span class="editableAmount"
+                      id="${record.id}">${record.budgetedAmount}</span></td>
+            <td><span>${record.spending}</span></td>
+            <td><span id="available-${record.id}">${record.available}</span></td>
         </tr>
-        </thead>
-        <tbody>
-        <c:forEach var="record" items="${records}">
-            <tr>
-                <td><span class="editableCategory"
-                          id="category-${record.category.id}">${record.category.name}</span></td>
-                <td><span class="editableAmount"
-                          id="amount-${record.id}">${record.budgetedAmount}</span></td>
-                <td><span>${record.spending}</span></td>
-                <td><span>${record.available}</span></td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-    <input type="submit" class="btn btn-primary" value="Save changes">
-</form>
+    </c:forEach>
+    </tbody>
+</table>
+
 <div>
     <form:form class="form-inline" modelAttribute="category" method="post" id="addCategoryForm"
                action="/user/addCategory">
