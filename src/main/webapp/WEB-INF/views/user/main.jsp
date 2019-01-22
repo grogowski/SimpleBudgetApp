@@ -47,10 +47,8 @@
     <tbody>
     <c:forEach var="record" items="${records}">
         <tr>
-            <td><span class="editableCategory"
-                      id="${record.category.id}">${record.category.name}</span></td>
-            <td><span class="editableAmount"
-                      id="${record.id}">${record.budgetedAmount}</span></td>
+            <td class="editableCategory"><span id="${record.category.id}">${record.category.name}</span></td>
+            <td class="editableAmount"><span id="${record.id}">${record.budgetedAmount}</span></td>
             <td><span>${record.spending}</span></td>
             <td><span id="available-${record.id}">${record.available}</span></td>
         </tr>

@@ -11,7 +11,7 @@ $(document).ready(function () {
         $(this).hide();
         $("#addCategoryForm").show();
     });
-    $(".editableCategory").on("click", function () {
+    $(".editableCategory").on("click", "span", function () {
         var input = $('<input>')
             .attr("type", "text")
             .attr("value", $(this).text())
@@ -30,7 +30,6 @@ $(document).ready(function () {
                 },
                 success : function(result) {
                     $('<span>')
-                        .attr("class", "editableCategory")
                         .attr("id", input.attr("id"))
                         .text(result.categoryName)
                         .appendTo(input.parent());
@@ -40,7 +39,7 @@ $(document).ready(function () {
         });
         $(this).remove();
     });
-    $(".editableAmount").on("click", function () {
+    $(".editableAmount").on("click", "span", function () {
         var input = $('<input>')
             .attr("type", "number")
             .attr("min", 0)
@@ -61,7 +60,6 @@ $(document).ready(function () {
                 success : function(result) {
                     var id = input.attr("id");
                     $('<span>')
-                        .attr("class", "editableAmount")
                         .attr("id", id)
                         .text(result.budgeted)
                         .appendTo(input.parent());
