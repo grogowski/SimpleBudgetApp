@@ -70,32 +70,13 @@ public class UserController {
         return "/user/main";
     }
 
-    @RequestMapping(value = "/main/{month}", method = RequestMethod.POST)
-    public String updated(@RequestParam Map<String, String> parameters, @PathVariable String month) {
-        for (String param : parameters.keySet()) {
-            String parts[] = param.split("-");
-            if (parts[0].equals("category")) {
-                String categoryId = param.split("-")[1];
-                String categoryNewName = parameters.get(param);
-                if (!categoryNewName.isEmpty()) {
-                    categoryService.editCategory(categoryId, categoryNewName);
-                }
-            } else if (parts[0].equals("amount")) {
-                String recordId = param.split("-")[1];
-                String budgetedAmount = parameters.get(param);
-                recordService.editRecord(recordId, budgetedAmount);
-            }
-        }
-        return "redirect: /user/main/" + month;
-    }
-
     @RequestMapping(value = "/main/edit", method = RequestMethod.POST)
     @ResponseBody
     public String updateMainView(@RequestParam String changed, @RequestParam String value, @RequestParam String id, @SessionAttribute String userEmail) {
         if (changed.equals("category")) {
             categoryService.editCategory(id, value);
             return new JSONObject().put("categoryName", value).toString();
-        } else if (changed.equals("amount")){
+        } else if (changed.equals("amount")) {
             recordService.editRecord(id, value);
             Record record = recordService.getRecord(id, userEmail);
             String totalBudgeted = recordService.getTotalBudgetedForGivenMonth(userEmail, record.getDate()).toString();
@@ -133,24 +114,25 @@ public class UserController {
         return "redirect: /user/cashflows";
     }
 
-    @RequestMapping(path = "/editCashFlows", method = RequestMethod.POST)
-    public String editCashFlows(@RequestParam Map<String, String> parameters, @SessionAttribute String userEmail) {
-        for (String param : parameters.keySet()) {
-            String parts[] = param.split("-");
-            CashFlow cashFlow = cashFlowService.getCashFlowById(parts[1]);
-            if (parts[0].equals("category")) {
-                cashFlow.setCategory(categoryService.getCategoryById(parameters.get(param)));
-            } else if (parts[0].equals("date")) {
-                cashFlow.setDate(LocalDate.parse(parameters.get(param)));
-            } else if (parts[0].equals("in")) {
-                cashFlow.setAmount(BigDecimal.valueOf(Double.parseDouble(parameters.get(param))));
-            } else if (parts[0].equals("out")) {
-                cashFlow.setAmount(BigDecimal.valueOf(Double.parseDouble(parameters.get(param))));
-            }
-            cashFlowService.update(cashFlow);
+    @RequestMapping(path = "/editCashFlow", method = RequestMethod.POST)
+    public String editCashFlows(@RequestParam String id,
+                                @RequestParam String categoryId,
+                                @RequestParam String date,
+                                @RequestParam String in,
+                                @RequestParam String out,
+                                @SessionAttribute String userEmail) {
+        CashFlow cashFlow = cashFlowService.getCashFlowById(id);
+        cashFlow.setDate(LocalDate.parse(date));
+        if(in.equals("0")){
+            cashFlow.setCategory(categoryService.getCategoryById(categoryId));
+            cashFlow.setAmount(BigDecimal.valueOf(Double.parseDouble(out)));
+        } else {
+            cashFlow.setAmount(BigDecimal.valueOf(Double.parseDouble(in)));
         }
+        cashFlowService.update(cashFlow);
         return "redirect: /user/cashflows";
     }
+
 
     @RequestMapping(path = "/addCategory", method = RequestMethod.POST)
     public String addCategory(@Valid Category category, BindingResult result,

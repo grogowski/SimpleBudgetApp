@@ -21,7 +21,7 @@
         <a class="nav-link" href="/user/logout">Logout</a>
     </li>
 </ul>
-<form id="bigForm" action="/user/editCashFlows" method="post">
+<form id="bigForm" action="/user/editCashFlow" method="post">
     <table class="table table-bordered table-sm">
         <thead class="thead-light">
         <tr>
@@ -34,21 +34,24 @@
         </thead>
         <tbody>
         <c:forEach var="cashFlow" items="${cashFlows}">
-            <tr>
-                <td><span class="${cashFlow.category.name == 'Income' ? '' : 'editableCategory'}"
-                          id="category-${cashFlow.id}">${cashFlow.category.name}</span></td>
-                <td><span class="editableDate"
-                          id="date-${cashFlow.id}">${cashFlow.date}</span></td>
-                <td><span class="${cashFlow.category.name == 'Income' ? '' : 'editableOut'}"
-                          id="out-${cashFlow.id}">${cashFlow.out}</span></td>
-                <td><span class="${cashFlow.category.name == 'Income' ? 'editableIn' : ''}"
-                          id="in-${cashFlow.id}">${cashFlow.in}</span></td>
+            <tr class="${cashFlow.category.name == 'Income' ? 'editableIn' : 'editableOut'}" id="${cashFlow.id}">
+                <td>
+                    <span class="category" id="${cashFlow.category.id}">${cashFlow.category.name}</span>
+                </td>
+                <td>
+                    <span class="date">${cashFlow.date}</span>
+                </td>
+                <td>
+                    <span class="out">${cashFlow.out}</span>
+                </td>
+                <td>
+                    <span class="in">${cashFlow.in}</span>
+                </td>
                 <td><a href="/user/deleteCashFlow/${cashFlow.id}" class="btn btn-primary">Delete</a></td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
-    <input form="bigForm" type="submit" class="btn btn-primary" value="Save changes">
 </form>
 <form:form modelAttribute="cashFlow" method="post" id="addCashFlow" action="/user/addCashFlow">
     <form:select path="category">
