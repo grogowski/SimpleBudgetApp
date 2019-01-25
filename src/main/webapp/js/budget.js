@@ -17,7 +17,8 @@ $(document).ready(function () {
             .attr("value", $(this).text())
             .attr("required", true)
             .attr("id", $(this).attr("id"))
-            .appendTo($(this).parent());
+            .appendTo($(this).parent())
+            .focus();
         input.on("blur", function() {
             $.ajax({
                 url : '/user/main/edit',
@@ -46,7 +47,8 @@ $(document).ready(function () {
             .attr("step", 0.01)
             .attr("id", $(this).attr("id"))
             .attr("value", $(this).text())
-            .appendTo($(this).parent());
+            .appendTo($(this).parent())
+            .focus();
         input.on("blur", function () {
             $.ajax({
                 url : '/user/main/edit',
