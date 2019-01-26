@@ -31,7 +31,7 @@ public class LoginController {
         if (userService.authenticate(email, password)) {
             session.setAttribute("userEmail", email);
             LocalDate presentDate = LocalDate.now();
-            return "redirect: /user/main/default";
+            return "redirect: /user/main/present";
         }
         model.addAttribute("error", "Incorrect login data");
         return "/login/login";

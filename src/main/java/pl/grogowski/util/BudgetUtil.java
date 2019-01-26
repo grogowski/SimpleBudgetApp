@@ -6,8 +6,21 @@ import java.util.Locale;
 
 public class BudgetUtil {
 
-    public static String convertDate(LocalDate date) {
+    public static String DateToString(LocalDate date) {
         return date.getMonth().getDisplayName(TextStyle.FULL, Locale.UK) + " " + date.getYear();
+    }
+
+    public static LocalDate getPresentMonth() {
+        return LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1);
+    }
+
+    public static LocalDate getNextMonth() {
+        return getPresentMonth().plusMonths(1);
+    }
+
+    public static LocalDate StringToDate(String date) {
+        String[] parts = date.split("-");
+        return LocalDate.of(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
     }
 
 }

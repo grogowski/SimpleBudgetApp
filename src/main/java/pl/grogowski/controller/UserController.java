@@ -40,32 +40,29 @@ public class UserController {
 
     @RequestMapping(path = "/main/{month}", method = RequestMethod.GET)
     public String showMain(Model model, @SessionAttribute String userEmail, @PathVariable String month) {
-        LocalDate presentDate = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1);
-        LocalDate futureMonth = presentDate.plusMonths(1);
-        String[] parts = month.split("-");
-        LocalDate requestedDate;
-        if (month.equals("default")) {
-            requestedDate = presentDate;
+        LocalDate requestedMonth;
+        if (month.equals("present")) {
+            requestedMonth = BudgetUtil.getPresentMonth();
         } else {
-            requestedDate = LocalDate.of(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), 1);
+            requestedMonth = BudgetUtil.StringToDate(month);
         }
-        List<Record> records = recordService.getRecordsForGivenMonth(userEmail, requestedDate);
-        BigDecimal totalBudgeted = recordService.getTotalBudgetedForGivenMonth(userEmail, requestedDate);
+        List<Record> records = recordService.getRecordsForGivenMonth(userEmail, requestedMonth);
+        BigDecimal totalBudgeted = recordService.getTotalBudgetedForGivenMonth(userEmail, requestedMonth);
         BigDecimal balance = userService.getUserBalance(userEmail);
         List<LocalDate> dates = recordService.getExistingRecordsDates(userEmail);
-        if (!dates.contains(futureMonth)) {
-            dates.add(futureMonth);
+        if (!dates.contains(BudgetUtil.getNextMonth())) {
+            dates.add(BudgetUtil.getNextMonth());
         }
         Map<LocalDate, String> availableMonths = new TreeMap<>();
         for (LocalDate d : dates) {
-            availableMonths.put(d, BudgetUtil.convertDate(d));
+            availableMonths.put(d, BudgetUtil.DateToString(d));
         }
         model.addAttribute("availableMonths", availableMonths);
         model.addAttribute("records", records);
         model.addAttribute("budgeted", totalBudgeted);
         model.addAttribute("balance", balance);
         model.addAttribute("category", new Category());
-        model.addAttribute("displayedMonth", requestedDate);
+        model.addAttribute("displayedMonth", requestedMonth);
         return "/user/main";
     }
 
