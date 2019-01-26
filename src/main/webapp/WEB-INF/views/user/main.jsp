@@ -13,29 +13,41 @@
     <link href="/css/budget.css" rel="stylesheet">
 </head>
 <body>
-<ul class="nav nav-pills nav-fill">
-    <li class="nav-item">
-        <a class="nav-link active" href="/user/main/default">Budget view</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="/user/cashflows">Transactions view</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="/user/logout">Logout</a>
-    </li>
-</ul>
-<div class="row">
-    <div class="col-sm-4">
-        <select name="months" id="monthSelect">
-            <c:forEach var="month" items="${availableMonths}">
-                <option value="${month.key}">${month.value}</option>
-            </c:forEach>
-        </select></div>
-    <div class="col-sm-4">
-        <h5 id="totalBudgeted">Total budgeted this month: ${budgeted}</h5>
+<%@ include file="header_menu.jspf" %>
+<div class="row row-eq-height">
+    <div class="col-lg-4">
+        <div class="card my-3 ml-3">
+            <div class="card-header">
+                Month
+            </div>
+            <div class="card-body">
+                <select id="monthSelect" data="${displayedMonth}">
+                    <c:forEach var="month" items="${availableMonths}">
+                        <option value="${month.key}">${month.value}</option>
+                    </c:forEach>
+                </select>
+            </div>
+        </div>
     </div>
-    <div class="col-sm-4">
-        <div><h5>Present account balance: ${balance}</h5></div>
+    <div class="col-lg-4">
+        <div class="card my-3">
+            <div class="card-header">
+                Total budgeted this month
+            </div>
+            <div class="card-body">
+                <h5 id="totalBudgeted">${budgeted}</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card my-3 mr-3">
+            <div class="card-header">
+                Present account balance
+            </div>
+            <div class="card-body">
+                <h5>${balance}</h5>
+            </div>
+        </div>
     </div>
 </div>
 <table class="table table-bordered table-sm">

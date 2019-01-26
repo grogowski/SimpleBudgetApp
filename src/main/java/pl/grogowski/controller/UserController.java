@@ -57,7 +57,6 @@ public class UserController {
             dates.add(futureMonth);
         }
         Map<LocalDate, String> availableMonths = new TreeMap<>();
-        availableMonths.put(LocalDate.of(1900, 01, 01), "select month");
         for (LocalDate d : dates) {
             availableMonths.put(d, BudgetUtil.convertDate(d));
         }
@@ -66,7 +65,7 @@ public class UserController {
         model.addAttribute("budgeted", totalBudgeted);
         model.addAttribute("balance", balance);
         model.addAttribute("category", new Category());
-        model.addAttribute("month", month);
+        model.addAttribute("displayedMonth", requestedDate);
         return "/user/main";
     }
 

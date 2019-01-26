@@ -7,7 +7,7 @@ import java.util.Locale;
 public class BudgetUtil {
 
     public static String convertDate(LocalDate date) {
-        return date.getMonth().getDisplayName(TextStyle.FULL, Locale.UK) + "_" + date.getYear();
+        return date.getMonth().getDisplayName(TextStyle.FULL, Locale.UK) + " " + date.getYear();
     }
 
 }

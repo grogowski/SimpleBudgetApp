@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    $("#budget").addClass("active");
+    $("#monthSelect").val($("#monthSelect").attr("data"));
     var editingOfaValueInProgress = false;
     var save = $('<i>').addClass("fas fa-check icon green");
     var cancel = $('<i>').addClass("fas fa-times icon red");
@@ -87,11 +89,8 @@ $(document).ready(function () {
                         originalSpan.text(result.budgeted).show();
                         var id = amountInput.attr("id");
                         amountInput.remove();
-                        var available = $('<span>').text(result.available);
-                        $("#available-" + id).parent().append(available);
-                        $("#available-" + id).remove();
-                        available.attr("id", "available-" + id);
-                        $("#totalBudgeted").text("Total budgeted this month: " + result.totalBudgeted);
+                        $("#available-" + id).text(result.available);
+                        $("#totalBudgeted").text(result.totalBudgeted);
                         cleanUp();
                     }
                 });

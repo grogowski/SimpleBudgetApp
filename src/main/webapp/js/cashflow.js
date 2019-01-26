@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    $("#transactions").addClass("active");
     $("#addCashFlow").hide();
     $("#addTransaction").on("click", function () {
         $(this).hide();
