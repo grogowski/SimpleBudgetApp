@@ -37,7 +37,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-
+    //returns a budget view for a month specified in path variable
     @RequestMapping(path = "/main/{month}", method = RequestMethod.GET)
     public String showMain(Model model, @SessionAttribute String userEmail, @PathVariable String month) {
         LocalDate requestedMonth;
@@ -46,9 +46,6 @@ public class UserController {
         } else {
             requestedMonth = BudgetUtil.StringToDate(month);
         }
-        List<Record> records = recordService.getRecordsForGivenMonth(userEmail, requestedMonth);
-        BigDecimal totalBudgeted = recordService.getTotalBudgetedForGivenMonth(userEmail, requestedMonth);
-        BigDecimal balance = userService.getUserBalance(userEmail);
         List<LocalDate> dates = recordService.getExistingRecordsDates(userEmail);
         if (!dates.contains(BudgetUtil.getNextMonth())) {
             dates.add(BudgetUtil.getNextMonth());
@@ -58,14 +55,15 @@ public class UserController {
             availableMonths.put(d, BudgetUtil.DateToString(d));
         }
         model.addAttribute("availableMonths", availableMonths);
-        model.addAttribute("records", records);
-        model.addAttribute("budgeted", totalBudgeted);
-        model.addAttribute("balance", balance);
+        model.addAttribute("records", recordService.getRecordsForGivenMonth(userEmail, requestedMonth));
+        model.addAttribute("budgeted", recordService.getTotalBudgetedForGivenMonth(userEmail, requestedMonth));
+        model.addAttribute("balance", userService.getUserBalance(userEmail));
         model.addAttribute("category", new Category());
         model.addAttribute("displayedMonth", requestedMonth);
         return "/user/main";
     }
 
+    //updates category name or budgeted amount in db and returns JSON with data to update the view
     @RequestMapping(value = "/main/edit", method = RequestMethod.POST)
     @ResponseBody
     public String updateMainView(@RequestParam String changed, @RequestParam String value, @RequestParam String id, @SessionAttribute String userEmail) {
@@ -87,19 +85,20 @@ public class UserController {
         return new JSONObject().toString();
     }
 
+    //returns transactions view
     @RequestMapping(path = "/cashflows", method = RequestMethod.GET)
     public String showCashFlows(Model model, @SessionAttribute String userEmail) {
-        List<CashFlow> cashFlows = cashFlowService.getAllCashFlowsForUser(userEmail);
         List<Category> categories = categoryService.getCategoriesForUser(userEmail);
         Category income = new Category();
         income.setName("Income");
         categories.add(income);
         model.addAttribute("categories", categories);
-        model.addAttribute("cashFlows", cashFlows);
+        model.addAttribute("cashFlows", cashFlowService.getAllCashFlowsForUser(userEmail));
         model.addAttribute("cashFlow", new CashFlow());
         return "user/cashflows";
     }
 
+    //saves a new casflow in db and returns updated transactions view
     @RequestMapping(path = "/addCashFlow", method = RequestMethod.POST)
     public String addCashFlow(@Valid CashFlow cashFlow, BindingResult result, @SessionAttribute String userEmail) {
         if (!result.hasErrors()) {
@@ -110,6 +109,7 @@ public class UserController {
         return "redirect: /user/cashflows";
     }
 
+    //updates cashflow in db returns updated transactions view
     @RequestMapping(path = "/editCashFlow", method = RequestMethod.POST)
     public String editCashFlows(@RequestParam String id,
                                 @RequestParam String categoryId,
