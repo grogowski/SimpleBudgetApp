@@ -24,7 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-//class handles all views for signed in user
+/**
+ * Handles all views for signed in user.
+ */
 @RequestMapping("/user")
 @Controller
 public class UserController {
@@ -38,7 +40,9 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    //returns a budget view for a month specified in path variable
+    /**
+     * Returns a budget view for a month specified in path variable.
+     */
     @RequestMapping(path = "/main/{month}", method = RequestMethod.GET)
     public String showMain(Model model, @SessionAttribute String userEmail, @PathVariable String month) {
         LocalDate requestedMonth;
@@ -64,10 +68,9 @@ public class UserController {
         return "/user/main";
     }
 
-    /*
-    updates category name or budgeted amount in db (checks whether new category name is not a duplicate),
-    returns JSON with data to update the view
-    */
+    /**
+     * Updates category name or budgeted amount in db, returns JSON with data to update the view.
+     */
     @RequestMapping(value = "/main/edit", method = RequestMethod.POST)
     @ResponseBody
     public String updateMainView(@RequestParam String changed, @RequestParam String value, @RequestParam String id, @SessionAttribute String userEmail) {
@@ -91,7 +94,9 @@ public class UserController {
         return new JSONObject().toString();
     }
 
-    //returns transactions view
+    /**
+     * Returns transactions view.
+     */
     @RequestMapping(path = "/cashflows", method = RequestMethod.GET)
     public String showCashFlows(Model model, @SessionAttribute String userEmail) {
         List<Category> categories = categoryService.getCategoriesForUser(userEmail);
@@ -104,7 +109,9 @@ public class UserController {
         return "user/cashflows";
     }
 
-    //saves a new cashflow in db and returns updated transactions view
+    /**
+     * Saves a new cashflow in db, returns updated transactions view.
+     */
     @RequestMapping(path = "/addCashFlow", method = RequestMethod.POST)
     public String addCashFlow(@Valid CashFlow cashFlow, BindingResult result, @SessionAttribute String userEmail) {
         if (!result.hasErrors()) {
@@ -115,51 +122,52 @@ public class UserController {
         return "redirect: /user/cashflows";
     }
 
-    //updates cashflow in db, returns updated transactions view
+    /**
+     * Updates cashflow in db, returns updated transactions view.
+     */
     @RequestMapping(path = "/editCashFlow", method = RequestMethod.POST)
     public String editCashFlows(@RequestParam String id,
-                                @RequestParam String categoryId,
+                                @RequestParam(required = false) String categoryId,
                                 @RequestParam String date,
-                                @RequestParam String in,
-                                @RequestParam String out,
+                                @RequestParam String amount,
                                 @SessionAttribute String userEmail) {
         CashFlow cashFlow = cashFlowService.getCashFlowById(id);
         cashFlow.setDate(LocalDate.parse(date));
-        if(in.equals("0")){
+        cashFlow.setAmount(BigDecimal.valueOf(Double.parseDouble(amount)));
+        if (categoryId!=null) {
             cashFlow.setCategory(categoryService.getCategoryById(categoryId));
-            cashFlow.setAmount(BigDecimal.valueOf(Double.parseDouble(out)));
-        } else {
-            cashFlow.setAmount(BigDecimal.valueOf(Double.parseDouble(in)));
         }
         cashFlowService.update(cashFlow);
         return "redirect: /user/cashflows";
     }
 
-    /*
-    validates new category sent from a form,
-    if there are no errors and category name is not a duplicate saves new category,
-    redirects to /user/main/{month} (showMain action)
-    */
+    /**
+     * Validates and saves new category, redirects to main view.
+     */
     @RequestMapping(path = "/addCategory", method = RequestMethod.POST)
     public String addCategory(@Valid Category category, BindingResult result,
                               @SessionAttribute String userEmail,
                               @RequestParam String displayedMonth) {
         List<Category> categories = categoryService.getCategoriesForUser(userEmail);
         if (!result.hasErrors()
-                &&!categoryService.userCategoriesContainCategoryWithGivenName(category.getName(), userEmail)) {
+                && !categoryService.userCategoriesContainCategoryWithGivenName(category.getName(), userEmail)) {
             categoryService.addCategory(userEmail, category);
         }
         return "redirect: /user/main/" + displayedMonth;
     }
 
-    //logout method, after logout redirects to login screen
+    /**
+     * Logout method. After logout redirects to login view.
+     */
     @RequestMapping(path = "/logout", method = RequestMethod.GET)
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect: /";
     }
 
-    //deletes a cashflow and redirects to updated transactions view
+    /**
+     * Deletes a cashflow and redirects to updated transactions view.
+     */
     @RequestMapping(path = "/deleteCashFlow/{cashFlowId}", method = RequestMethod.GET)
     public String deleteCashFlow(@PathVariable String cashFlowId) {
         cashFlowService.delete(cashFlowId);

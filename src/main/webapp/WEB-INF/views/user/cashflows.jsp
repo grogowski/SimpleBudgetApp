@@ -24,7 +24,7 @@
         </thead>
         <tbody>
         <c:forEach var="cashFlow" items="${cashFlows}">
-            <tr class="${cashFlow.category.name == 'Income' ? 'editableIn' : 'editableOut'}" id="${cashFlow.id}">
+            <tr class="${cashFlow.category.name == 'Income' ? 'editable in' : 'editable out'}" id="${cashFlow.id}">
                 <td>
                     <span class="category" id="${cashFlow.category.id}">${cashFlow.category.name}</span>
                 </td>
