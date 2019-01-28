@@ -60,6 +60,19 @@ public class CategoryService {
         categoryRepository.save(toBeEdited);
     }
 
+    public boolean userCategoriesContainCategoryWithGivenName(String categoryName, String userEmail) {
+        List<Category> categories = getCategoriesForUser(userEmail);
+        for (Category c:categories) {
+            if(categoryName.equals(c.getName())) {
+                return true;
+            }
+        }
+        if (categoryName.equals("Income")) {
+            return true;
+        }
+        return false;
+    }
+
     public Category getCategoryById(String id) {
         return categoryRepository.findOne(Long.parseLong(id));
     }
