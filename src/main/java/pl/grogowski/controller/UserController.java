@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+//class handles all views for signed in user
 @RequestMapping("/user")
 @Controller
 public class UserController {
@@ -63,13 +64,18 @@ public class UserController {
         return "/user/main";
     }
 
-    //updates category name or budgeted amount in db and returns JSON with data to update the view
+    /*
+    updates category name or budgeted amount in db (checks whether new category name is not a duplicate),
+    returns JSON with data to update the view
+    */
     @RequestMapping(value = "/main/edit", method = RequestMethod.POST)
     @ResponseBody
     public String updateMainView(@RequestParam String changed, @RequestParam String value, @RequestParam String id, @SessionAttribute String userEmail) {
         if (changed.equals("category")) {
-            categoryService.editCategory(id, value);
-            return new JSONObject().put("categoryName", value).toString();
+            if (!categoryService.userCategoriesContainCategoryWithGivenName(value, userEmail)) {
+                categoryService.editCategory(id, value);
+            }
+            return new JSONObject().put("categoryName", categoryService.getCategoryById(id).getName()).toString();
         } else if (changed.equals("amount")) {
             recordService.editRecord(id, value);
             Record record = recordService.getRecord(id, userEmail);
@@ -98,7 +104,7 @@ public class UserController {
         return "user/cashflows";
     }
 
-    //saves a new casflow in db and returns updated transactions view
+    //saves a new cashflow in db and returns updated transactions view
     @RequestMapping(path = "/addCashFlow", method = RequestMethod.POST)
     public String addCashFlow(@Valid CashFlow cashFlow, BindingResult result, @SessionAttribute String userEmail) {
         if (!result.hasErrors()) {
@@ -109,7 +115,7 @@ public class UserController {
         return "redirect: /user/cashflows";
     }
 
-    //updates cashflow in db returns updated transactions view
+    //updates cashflow in db, returns updated transactions view
     @RequestMapping(path = "/editCashFlow", method = RequestMethod.POST)
     public String editCashFlows(@RequestParam String id,
                                 @RequestParam String categoryId,
@@ -129,23 +135,31 @@ public class UserController {
         return "redirect: /user/cashflows";
     }
 
-
+    /*
+    validates new category sent from a form,
+    if there are no errors and category name is not a duplicate saves new category,
+    redirects to /user/main/{month} (showMain action)
+    */
     @RequestMapping(path = "/addCategory", method = RequestMethod.POST)
     public String addCategory(@Valid Category category, BindingResult result,
                               @SessionAttribute String userEmail,
-                              @RequestParam String month) {
-        if (!result.hasErrors()) {
+                              @RequestParam String displayedMonth) {
+        List<Category> categories = categoryService.getCategoriesForUser(userEmail);
+        if (!result.hasErrors()
+                &&!categoryService.userCategoriesContainCategoryWithGivenName(category.getName(), userEmail)) {
             categoryService.addCategory(userEmail, category);
         }
-        return "redirect: /user/main/" + month;
+        return "redirect: /user/main/" + displayedMonth;
     }
 
+    //logout method, after logout redirects to login screen
     @RequestMapping(path = "/logout", method = RequestMethod.GET)
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect: /";
     }
 
+    //deletes a cashflow and redirects to updated transactions view
     @RequestMapping(path = "/deleteCashFlow/{cashFlowId}", method = RequestMethod.GET)
     public String deleteCashFlow(@PathVariable String cashFlowId) {
         cashFlowService.delete(cashFlowId);
