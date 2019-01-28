@@ -76,7 +76,7 @@
                action="/user/addCategory">
         <form:input class="form-control" type="text" path="name" placeholder="New category name"/>
         <input class="btn btn-primary" type="submit" value="Add Category">
-        <input type="hidden" name="month" value="${month}">
+        <input type="hidden" name="displayedMonth" value="${displayedMonth}">
     </form:form>
 </div>
 <button id="addCategoryButton" class="btn btn-primary">Add Category</button>
