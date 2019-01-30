@@ -22,8 +22,12 @@
         <a id="transactions" class="nav-link" href="/user/cashflows">Transactions view</a>
     </li>
     <li class="nav-item">
+        <a id="charts" class="nav-link" href="/user/charts">Charts view</a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link" href="/user/logout">Logout</a>
     </li>
+
 </ul>
 </body>
 </html>

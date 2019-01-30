@@ -174,5 +174,14 @@ public class UserController {
         return "redirect: /user/cashflows";
     }
 
+    /**
+     * Returns charts view.
+     */
+    @RequestMapping(path = "/charts", method = RequestMethod.GET)
+    public String showCharts(Model model, @SessionAttribute String userEmail) {
+
+        return "user/charts";
+    }
+
 
 }
