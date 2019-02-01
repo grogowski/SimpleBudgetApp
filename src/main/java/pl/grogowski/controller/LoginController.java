@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import pl.grogowski.model.User;
 import pl.grogowski.service.UserService;
+import pl.grogowski.util.BudgetUtil;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -29,9 +30,10 @@ public class LoginController {
     @RequestMapping(path = "", method = RequestMethod.POST)
     public String login(@RequestParam String email, @RequestParam String password, HttpSession session, Model model) {
         if (userService.authenticate(email, password)) {
+            LocalDate presentMonth = BudgetUtil.getPresentMonth();
             session.setAttribute("userEmail", email);
-            LocalDate presentDate = LocalDate.now();
-            return "redirect: /user/main/present";
+            session.setAttribute("presentMonth", presentMonth);
+            return "redirect: /user/main/"+ presentMonth;
         }
         model.addAttribute("error", "Incorrect login data");
         return "/login/login";

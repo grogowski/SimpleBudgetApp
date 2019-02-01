@@ -45,12 +45,7 @@ public class UserController {
      */
     @RequestMapping(path = "/main/{month}", method = RequestMethod.GET)
     public String showMain(Model model, @SessionAttribute String userEmail, @PathVariable String month) {
-        LocalDate requestedMonth;
-        if (month.equals("present")) {
-            requestedMonth = BudgetUtil.getPresentMonth();
-        } else {
-            requestedMonth = BudgetUtil.StringToDate(month);
-        }
+        LocalDate requestedMonth = BudgetUtil.StringToDate(month);
         List<LocalDate> dates = recordService.getExistingRecordsDates(userEmail);
         if (!dates.contains(BudgetUtil.getNextMonth())) {
             dates.add(BudgetUtil.getNextMonth());
@@ -179,7 +174,12 @@ public class UserController {
      */
     @RequestMapping(path = "/charts", method = RequestMethod.GET)
     public String showCharts(Model model, @SessionAttribute String userEmail) {
-
+        List<LocalDate> dates = recordService.getExistingRecordsDates(userEmail);
+        Map<LocalDate, String> availableMonths = new TreeMap<>();
+        for (LocalDate d : dates) {
+            availableMonths.put(d, BudgetUtil.DateToString(d));
+        }
+        model.addAttribute("availableMonths", availableMonths);
         return "user/charts";
     }
 
