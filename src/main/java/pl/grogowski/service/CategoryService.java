@@ -76,4 +76,12 @@ public class CategoryService {
     public Category getCategoryById(String id) {
         return categoryRepository.findOne(Long.parseLong(id));
     }
+
+    public List<String> getCategoriesNamesForUser(String userEmail) {
+        List<String> categoriesNames = new ArrayList<>();
+        for (Category c: getCategoriesForUser(userEmail)) {
+            categoriesNames.add(c.getName());
+        }
+        return categoriesNames;
+    }
 }

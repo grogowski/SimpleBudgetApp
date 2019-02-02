@@ -19,10 +19,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * Handles all views for signed in user.
@@ -181,6 +178,18 @@ public class UserController {
         }
         model.addAttribute("availableMonths", availableMonths);
         return "user/charts";
+    }
+
+    /**
+     * UReturns JSON with data to draw a chart.
+     */
+    @RequestMapping(value = "/charts/draw/{month}", method = RequestMethod.POST)
+    @ResponseBody
+    public String drawChart(@PathVariable LocalDate month, @SessionAttribute String userEmail) {
+        List<String> categoriesNames = categoryService.getCategoriesNamesForUser(userEmail);
+        List<BigDecimal> budgeted = recordService.getBudgetedForGivenMonth(userEmail, month);
+        List<BigDecimal> spending = recordService.getSpendingsForGivenMonth(userEmail, month);
+        return new JSONObject().toString();
     }
 
 

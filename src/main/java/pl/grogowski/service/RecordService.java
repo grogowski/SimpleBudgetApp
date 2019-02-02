@@ -96,4 +96,19 @@ public class RecordService {
     }
 
 
+    public List<BigDecimal> getBudgetedForGivenMonth(String userEmail, LocalDate month) {
+        List<BigDecimal> budgeted = new ArrayList<>();
+        for (Record r: getRecordsForGivenMonth(userEmail, month)) {
+            budgeted.add(r.getBudgetedAmount());
+        }
+        return budgeted;
+    }
+
+    public List<BigDecimal> getSpendingsForGivenMonth(String userEmail, LocalDate month) {
+        List<BigDecimal> spendings = new ArrayList<>();
+        for (Record r: getRecordsForGivenMonth(userEmail, month)) {
+            spendings.add(r.getSpending());
+        }
+        return spendings;
+    }
 }
