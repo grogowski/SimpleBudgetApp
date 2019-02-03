@@ -15,8 +15,8 @@
 <body>
 <%@ include file="header_menu.jspf" %>
 <div class="row">
-    <div class="col-lg-12">
-        <div class="card my-3 mx-3">
+    <div class="col-lg-6">
+        <div class="card my-3 ml-3">
             <div class="card-header">
                 Month
             </div>
@@ -29,9 +29,52 @@
             </div>
         </div>
     </div>
+    <div class="col-lg-6">
+        <div class="card my-3 mr-3">
+            <div class="card-header">
+                Chart type
+            </div>
+            <div class="card-body">
+                <select id="chartSelect" data="${displayedMonth}">
+                        <option value="bar" selected>Bar</option>
+                        <option value="pie">Pie</option>
+                </select>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="container">
-    <canvas id="myChart"></canvas>
+<div id="barDiv" class="card mb-3 mx-3">
+    <div class="card-header">
+        <i class="fas fa-chart-bar"></i>
+        Budgeted/Spending Bar Chart</div>
+    <div class="card-body">
+        <canvas id="barChart" width="100%" height="35"></canvas>
+    </div>
+    <div class="card-footer small text-muted"></div>
+</div>
+<div id="pieDiv" class="row">
+    <div class="col-lg-6">
+        <div class="card mb-3 ml-3">
+            <div class="card-header">
+                <i class="fas fa-chart-pie"></i>
+                Budgeted Pie Chart</div>
+            <div class="card-body">
+                <canvas id="budgetedChart" width="100%" height="75"></canvas>
+            </div>
+            <div class="card-footer small text-muted"></div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card mb-3 mr-3">
+            <div class="card-header">
+                <i class="fas fa-chart-pie"></i>
+                Spending Pie Chart</div>
+            <div class="card-body">
+                <canvas id="spendingChart" width="100%" height="75"></canvas>
+            </div>
+            <div class="card-footer small text-muted"></div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
