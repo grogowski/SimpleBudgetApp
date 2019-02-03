@@ -177,19 +177,24 @@ public class UserController {
             availableMonths.put(d, BudgetUtil.DateToString(d));
         }
         model.addAttribute("availableMonths", availableMonths);
+        model.addAttribute("displayedMonth", BudgetUtil.getPresentMonth());
         return "user/charts";
     }
 
     /**
-     * UReturns JSON with data to draw a chart.
+     * Returns JSON with data to draw a chart.
      */
     @RequestMapping(value = "/charts/draw/{month}", method = RequestMethod.POST)
     @ResponseBody
-    public String drawChart(@PathVariable LocalDate month, @SessionAttribute String userEmail) {
+    public String drawChart(@PathVariable String month, @SessionAttribute String userEmail) {
         List<String> categoriesNames = categoryService.getCategoriesNamesForUser(userEmail);
-        List<BigDecimal> budgeted = recordService.getBudgetedForGivenMonth(userEmail, month);
-        List<BigDecimal> spending = recordService.getSpendingsForGivenMonth(userEmail, month);
-        return new JSONObject().toString();
+        List<BigDecimal> budgeted = recordService.getBudgetedForGivenMonth(userEmail, BudgetUtil.StringToDate(month));
+        List<BigDecimal> spending = recordService.getSpendingsForGivenMonth(userEmail, BudgetUtil.StringToDate(month));
+        Map<String, List> map = new HashMap<>();
+        map.put("categories", categoriesNames);
+        map.put("budgeted", budgeted);
+        map.put("spending", spending);
+        return new JSONObject(map).toString();
     }
 
 

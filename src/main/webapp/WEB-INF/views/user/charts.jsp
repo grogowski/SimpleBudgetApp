@@ -21,7 +21,7 @@
                 Month
             </div>
             <div class="card-body">
-                <select id="monthSelect">
+                <select id="monthSelect" data="${displayedMonth}">
                     <c:forEach var="month" items="${availableMonths}">
                         <option value="${month.key}">${month.value}</option>
                     </c:forEach>
