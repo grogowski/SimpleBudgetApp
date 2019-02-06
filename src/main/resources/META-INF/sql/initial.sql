@@ -1,10 +1,1 @@
-insert into categories (name, user_id) values ("Rent/Mortgage", null);
-insert into categories (name, user_id) values ("Electric", null);
-insert into categories (name, user_id) values ("Water", null);
-insert into categories (name, user_id) values ("Internet", null);
-insert into categories (name, user_id) values ("Groceries", null);
-insert into categories (name, user_id) values ("Transportation", null);
-insert into categories (name, user_id) values ("Clothing", null);
-insert into categories (name, user_id) values ("Medical", null);
-insert into categories (name, user_id) values ("Gifts", null);
-insert into categories (name, user_id) values ("Stuff I forgot to budget for", null);
+INSERT IGNORE INTO `categories` VALUES (1, false, 'Rent/Mortgage',NULL),(2, false,'Electric',NULL),(3, false,'Water',NULL),(4, false,'Internet',NULL),(5, false,'Groceries',NULL),(6, false,'Transportation',NULL),(7, false,'Clothing',NULL),(8, false,'Medical',NULL),(9, false,'Gifts',NULL),(10, false,'Stuff I forgot to budget for',NULL),(11, true,'Salary',NULL),(12, false,'Other',NULL);
