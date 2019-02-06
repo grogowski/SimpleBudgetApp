@@ -38,6 +38,7 @@ public class CategoryService {
             Category newCategory = new Category();
             newCategory.setName(c.getName());
             newCategory.setUser(user);
+            newCategory.setInflow(c.isInflow());
             toBePersisted.add(newCategory);
         }
         categoryRepository.save(toBePersisted);

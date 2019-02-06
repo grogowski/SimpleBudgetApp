@@ -43,6 +43,7 @@ public class UserController {
     @RequestMapping(path = "/main/{month}", method = RequestMethod.GET)
     public String showMain(Model model, @SessionAttribute String userEmail, @PathVariable String month) {
         LocalDate requestedMonth = BudgetUtil.StringToDate(month);
+        List<Record> records = recordService.getRecordsForGivenMonth(userEmail, requestedMonth);
         List<LocalDate> dates = recordService.getExistingRecordsDates(userEmail);
         if (!dates.contains(BudgetUtil.getNextMonth())) {
             dates.add(BudgetUtil.getNextMonth());
@@ -52,7 +53,7 @@ public class UserController {
             availableMonths.put(d, BudgetUtil.DateToString(d));
         }
         model.addAttribute("availableMonths", availableMonths);
-        model.addAttribute("records", recordService.getRecordsForGivenMonth(userEmail, requestedMonth));
+        model.addAttribute("records", records);
         model.addAttribute("budgeted", recordService.getTotalBudgetedForGivenMonth(userEmail, requestedMonth));
         model.addAttribute("balance", userService.getUserBalance(userEmail));
         model.addAttribute("category", new Category());
@@ -116,16 +117,14 @@ public class UserController {
      */
     @RequestMapping(path = "/editCashFlow", method = RequestMethod.POST)
     public String editCashFlows(@RequestParam String id,
-                                @RequestParam(required = false) String categoryId,
+                                @RequestParam String categoryId,
                                 @RequestParam String date,
                                 @RequestParam String amount,
                                 @SessionAttribute String userEmail) {
         CashFlow cashFlow = cashFlowService.getCashFlowById(id);
         cashFlow.setDate(LocalDate.parse(date));
         cashFlow.setAmount(BigDecimal.valueOf(Double.parseDouble(amount)));
-        if (categoryId!=null) {
-            cashFlow.setCategory(categoryService.getCategoryById(categoryId));
-        }
+        cashFlow.setCategory(categoryService.getCategoryById(categoryId));
         cashFlowService.update(cashFlow);
         return "redirect: /user/cashflows";
     }

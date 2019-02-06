@@ -44,14 +44,23 @@
     </table>
 </form>
 <form:form modelAttribute="cashFlow" method="post" id="addCashFlow" action="/user/addCashFlow">
-    <form:select path="category">
-        <form:options items="${categories}" itemValue="id" itemLabel="name"/>
-    </form:select>
+    <select id="inCategory">
+        <c:forEach var="category" items="${inCategories}">
+            <option value="${category.id}">${category.name}</option>
+        </c:forEach>
+    </select>
+    <select id="outCategory">
+        <c:forEach var="category" items="${outCategories}">
+            <option value="${category.id}">${category.name}</option>
+        </c:forEach>
+    </select>
     <form:input type="date" path="date"/>
     <form:input type="number" step="0.01" min="0.01" path="amount" placeholder="amount"/>
     <form:input id="inflowCheck" path="inflow" type="hidden"/>
     <input type="submit" value="Add">
 </form:form>
+
+
 
 <button id="addIncome" class="btn btn-primary">Add income</button>
 <button id="addSpending" class="btn btn-primary">Add spending</button>
