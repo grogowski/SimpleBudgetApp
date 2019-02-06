@@ -32,10 +32,10 @@
                     <span class="date">${cashFlow.date}</span>
                 </td>
                 <td>
-                    <span class="out">${cashFlow.out}</span>
+                    <span class="out">${cashFlow.inflow == true ? '' : cashFlow.amount}</span>
                 </td>
                 <td>
-                    <span class="in">${cashFlow.in}</span>
+                    <span class="in">${cashFlow.inflow == true ? cashFlow.amount : ''}</span>
                 </td>
                 <td><a href="/user/deleteCashFlow/${cashFlow.id}" class="btn btn-primary">Delete</a></td>
             </tr>

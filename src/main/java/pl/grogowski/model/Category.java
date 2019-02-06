@@ -19,7 +19,7 @@ public class Category {
     @ManyToOne
     private User user;
 
-    private boolean inflow;
+    private Boolean inflow;
 
     public Long getId() {
         return id;
@@ -45,11 +45,11 @@ public class Category {
         this.user = user;
     }
 
-    public boolean isInflow() {
+    public Boolean getInflow() {
         return inflow;
     }
 
-    public void setInflow(boolean inflow) {
+    public void setInflow(Boolean inflow) {
         this.inflow = inflow;
     }
 }

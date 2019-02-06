@@ -193,5 +193,14 @@ public class UserController {
         return new JSONObject(map).toString();
     }
 
+    /**
+     * Returns categories view.
+     */
+    @RequestMapping(path = "/categories", method = RequestMethod.GET)
+    public String showCategories(Model model, @SessionAttribute String userEmail) {
+        model.addAttribute("inCategories", categoryService.getCategoriesForUser(userEmail, true));
+        model.addAttribute("outCategories", categoryService.getCategoriesForUser(userEmail, false));
+        return "user/categories";
+    }
 
 }

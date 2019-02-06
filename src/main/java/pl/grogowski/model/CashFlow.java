@@ -27,7 +27,7 @@ public class CashFlow {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
-    private boolean inflow;
+    private Boolean inflow;
 
     public Long getId() {
         return id;
@@ -66,11 +66,11 @@ public class CashFlow {
         this.date = date;
     }
 
-    public boolean isInflow() {
+    public Boolean getInflow() {
         return inflow;
     }
 
-    public void setInflow(boolean inflow) {
+    public void setInflow(Boolean inflow) {
         this.inflow = inflow;
     }
 

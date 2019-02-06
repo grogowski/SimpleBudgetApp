@@ -26,7 +26,7 @@ public class CategoryService {
         return categories;
     }
 
-    public List<Category> getCategoriesForUser(String userEmail, boolean inflow) {
+    public List<Category> getCategoriesForUser(String userEmail, Boolean inflow) {
         List<Category> categories = categoryRepository.findByUserAndInflow(userService.getUserByEmail(userEmail), inflow);
         return categories;
     }
@@ -38,7 +38,7 @@ public class CategoryService {
             Category newCategory = new Category();
             newCategory.setName(c.getName());
             newCategory.setUser(user);
-            newCategory.setInflow(c.isInflow());
+            newCategory.setInflow(c.getInflow());
             toBePersisted.add(newCategory);
         }
         categoryRepository.save(toBePersisted);
@@ -63,7 +63,7 @@ public class CategoryService {
         categoryRepository.save(toBeEdited);
     }
 
-    public boolean userCategoriesContainCategoryWithGivenName(String categoryName, String userEmail) {
+    public Boolean userCategoriesContainCategoryWithGivenName(String categoryName, String userEmail) {
         List<Category> categories = getCategoriesForUser(userEmail);
         for (Category c:categories) {
             if(categoryName.equals(c.getName())) {

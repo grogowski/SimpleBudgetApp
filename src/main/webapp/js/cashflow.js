@@ -6,6 +6,7 @@ $(document).ready(function () {
         $(this).hide();
         $("#addSpending").hide();
         $("#outCategory").hide();
+        $("#inflowCheck").val("true");
         $("#inCategory").attr("name", "category").show();
         $("#addCashFlow").show();
     });

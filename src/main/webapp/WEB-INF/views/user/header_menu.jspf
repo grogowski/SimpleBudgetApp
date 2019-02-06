@@ -25,6 +25,9 @@
         <a id="charts" class="nav-link" href="/user/charts">Charts view</a>
     </li>
     <li class="nav-item">
+        <a id="categories" class="nav-link" href="/user/categories">Manage categories</a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link" href="/user/logout">Logout</a>
     </li>
 
