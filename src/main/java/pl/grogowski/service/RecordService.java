@@ -33,9 +33,8 @@ public class RecordService {
 
     public List<Record> getRecordsForGivenMonth(String userEmail, LocalDate date) {
         List<Record> records = recordRepository.queryFindByUserAndByDate(userService.getUserByEmail(userEmail), date);
-        List<Category> categories = categoryService.getCategoriesForUser(userEmail);
         if (records.isEmpty()) {
-            createBlankRecordsForGivenMonth(userEmail, date, categories);
+            createBlankRecordsForGivenMonth(userEmail, date, categoryService.getCategoriesForUser(userEmail, false));
             records = recordRepository.queryFindByUserAndByDate(userService.getUserByEmail(userEmail), date);
         }
         for (Record r : records) {
@@ -110,5 +109,13 @@ public class RecordService {
             spendings.add(r.getSpending());
         }
         return spendings;
+    }
+
+    public List<String> getCategoriesNamesForUser(String userEmail, LocalDate month) {
+        List<String> categoriesNames = new ArrayList<>();
+        for (Record r: getRecordsForGivenMonth(userEmail, month)) {
+            categoriesNames.add(r.getCategory().getName());
+        }
+        return categoriesNames;
     }
 }

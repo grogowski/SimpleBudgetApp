@@ -75,6 +75,7 @@
     <form:form class="form-inline" modelAttribute="category" method="post" id="addCategoryForm"
                action="/user/addCategory">
         <form:input class="form-control" type="text" path="name" placeholder="New category name"/>
+        <form:input path="inflow" type="hidden" value="false"/>
         <input class="btn btn-primary" type="submit" value="Add Category">
         <input type="hidden" name="displayedMonth" value="${displayedMonth}">
     </form:form>

@@ -91,11 +91,10 @@ public class UserController {
      */
     @RequestMapping(path = "/cashflows", method = RequestMethod.GET)
     public String showCashFlows(Model model, @SessionAttribute String userEmail) {
-        List<Category> categories = categoryService.getCategoriesForUser(userEmail);
-        Category income = new Category();
-        income.setName("Income");
-        categories.add(income);
-        model.addAttribute("categories", categories);
+        List<Category> inCategories = categoryService.getCategoriesForUser(userEmail, true);
+        List<Category> outCategories = categoryService.getCategoriesForUser(userEmail, false);
+        model.addAttribute("inCategories", inCategories);
+        model.addAttribute("outCategories", outCategories);
         model.addAttribute("cashFlows", cashFlowService.getAllCashFlowsForUser(userEmail));
         model.addAttribute("cashFlow", new CashFlow());
         return "user/cashflows";
@@ -105,10 +104,8 @@ public class UserController {
      * Saves a new cashflow in db, returns updated transactions view.
      */
     @RequestMapping(path = "/addCashFlow", method = RequestMethod.POST)
-    public String addCashFlow(@Valid CashFlow cashFlow, BindingResult result, @SessionAttribute String userEmail) {
+    public String addInflow(@Valid CashFlow cashFlow, BindingResult result, @SessionAttribute String userEmail) {
         if (!result.hasErrors()) {
-            cashFlowService.persist(cashFlow, userEmail);
-        } else if (result.getAllErrors().size() == 1 && cashFlow.getCategory().getName().equals("Income")) {
             cashFlowService.persist(cashFlow, userEmail);
         }
         return "redirect: /user/cashflows";
@@ -187,7 +184,7 @@ public class UserController {
     @RequestMapping(value = "/charts/draw/{month}", method = RequestMethod.POST)
     @ResponseBody
     public String drawChart(@PathVariable String month, @SessionAttribute String userEmail) {
-        List<String> categoriesNames = categoryService.getCategoriesNamesForUser(userEmail);
+        List<String> categoriesNames = recordService.getCategoriesNamesForUser(userEmail, BudgetUtil.StringToDate(month));
         List<BigDecimal> budgeted = recordService.getBudgetedForGivenMonth(userEmail, BudgetUtil.StringToDate(month));
         List<BigDecimal> spending = recordService.getSpendingsForGivenMonth(userEmail, BudgetUtil.StringToDate(month));
         Map<String, List> map = new HashMap<>();

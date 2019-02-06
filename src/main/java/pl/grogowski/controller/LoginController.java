@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import pl.grogowski.model.User;
+import pl.grogowski.service.CategoryService;
 import pl.grogowski.service.UserService;
 import pl.grogowski.util.BudgetUtil;
 
@@ -21,6 +22,8 @@ import java.time.LocalDate;
 public class LoginController {
     @Autowired
     UserService userService;
+    @Autowired
+    CategoryService categoryService;
 
     @RequestMapping(path = "", method = RequestMethod.GET)
     public String getLoginData() {
@@ -64,6 +67,7 @@ public class LoginController {
             return "/login/register";
         } else {
             userService.registerUser(user);
+            categoryService.createCategoriesForNewUser(user);
             return "redirect: /";
         }
     }

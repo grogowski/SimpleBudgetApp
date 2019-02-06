@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
+    List<Category> findByUserAndInflow(User user, boolean inflow);
     List<Category> findByUser(User user);
 
 }

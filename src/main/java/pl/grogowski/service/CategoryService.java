@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.grogowski.model.Category;
 import pl.grogowski.model.Record;
+import pl.grogowski.model.User;
 import pl.grogowski.repository.CategoryRepository;
 
 import java.math.BigDecimal;
@@ -22,20 +23,21 @@ public class CategoryService {
 
     public List<Category> getCategoriesForUser(String userEmail) {
         List<Category> categories = categoryRepository.findByUser(userService.getUserByEmail(userEmail));
-        if (categories.isEmpty()) {
-            createCategoriesForNewUser(userEmail);
-            categories = categoryRepository.findByUser(userService.getUserByEmail(userEmail));
-        }
         return categories;
     }
 
-    private void createCategoriesForNewUser(String userEmail) {
+    public List<Category> getCategoriesForUser(String userEmail, boolean inflow) {
+        List<Category> categories = categoryRepository.findByUserAndInflow(userService.getUserByEmail(userEmail), inflow);
+        return categories;
+    }
+
+    public void createCategoriesForNewUser(User user) {
         List<Category> categories = categoryRepository.findByUser(null);
         List<Category> toBePersisted = new ArrayList<>();
         for (Category c: categories) {
             Category newCategory = new Category();
             newCategory.setName(c.getName());
-            newCategory.setUser(userService.getUserByEmail(userEmail));
+            newCategory.setUser(user);
             toBePersisted.add(newCategory);
         }
         categoryRepository.save(toBePersisted);
@@ -67,9 +69,6 @@ public class CategoryService {
                 return true;
             }
         }
-        if (categoryName.equals("Income")) {
-            return true;
-        }
         return false;
     }
 
@@ -77,11 +76,4 @@ public class CategoryService {
         return categoryRepository.findOne(Long.parseLong(id));
     }
 
-    public List<String> getCategoriesNamesForUser(String userEmail) {
-        List<String> categoriesNames = new ArrayList<>();
-        for (Category c: getCategoriesForUser(userEmail)) {
-            categoriesNames.add(c.getName());
-        }
-        return categoriesNames;
-    }
 }

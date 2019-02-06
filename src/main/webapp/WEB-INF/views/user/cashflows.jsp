@@ -24,7 +24,7 @@
         </thead>
         <tbody>
         <c:forEach var="cashFlow" items="${cashFlows}">
-            <tr class="${cashFlow.category.name == 'Income' ? 'editable in' : 'editable out'}" id="${cashFlow.id}">
+            <tr class="${cashFlow.inflow == true ? 'editable in' : 'editable out'}" id="${cashFlow.id}">
                 <td>
                     <span class="category" id="${cashFlow.category.id}">${cashFlow.category.name}</span>
                 </td>
@@ -49,8 +49,11 @@
     </form:select>
     <form:input type="date" path="date"/>
     <form:input type="number" step="0.01" min="0.01" path="amount" placeholder="amount"/>
+    <form:input id="inflowCheck" path="inflow" type="hidden"/>
     <input type="submit" value="Add">
 </form:form>
-<button id="addTransaction" class="btn btn-primary">Add transaction</button>
+
+<button id="addIncome" class="btn btn-primary">Add income</button>
+<button id="addSpending" class="btn btn-primary">Add spending</button>
 </body>
 </html>
