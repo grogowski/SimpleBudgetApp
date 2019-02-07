@@ -119,8 +119,7 @@ public class UserController {
     public String editCashFlows(@RequestParam String id,
                                 @RequestParam String categoryId,
                                 @RequestParam String date,
-                                @RequestParam String amount,
-                                @SessionAttribute String userEmail) {
+                                @RequestParam String amount) {
         CashFlow cashFlow = cashFlowService.getCashFlowById(id);
         cashFlow.setDate(LocalDate.parse(date));
         cashFlow.setAmount(BigDecimal.valueOf(Double.parseDouble(amount)));
@@ -136,7 +135,6 @@ public class UserController {
     public String addCategory(@Valid Category category, BindingResult result,
                               @SessionAttribute String userEmail,
                               @RequestParam String displayedMonth) {
-        List<Category> categories = categoryService.getCategoriesForUser(userEmail);
         if (!result.hasErrors()
                 && !categoryService.userCategoriesContainCategoryWithGivenName(category.getName(), userEmail)) {
             categoryService.addCategory(userEmail, category);
@@ -201,6 +199,16 @@ public class UserController {
         model.addAttribute("inCategories", categoryService.getCategoriesForUser(userEmail, true));
         model.addAttribute("outCategories", categoryService.getCategoriesForUser(userEmail, false));
         return "user/categories";
+    }
+
+    /**
+     * Updates category name in db, returns JSON with data to update the view.
+     */
+    @RequestMapping(path = "/editCategoryName", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateCategoriesView(@RequestParam String newCategoryName, @RequestParam String id) {
+        categoryService.editCategory(id, newCategoryName);
+        return new JSONObject().toString();
     }
 
 }
