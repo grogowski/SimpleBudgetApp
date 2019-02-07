@@ -14,6 +14,7 @@ $(document).ready(function () {
         $(this).hide();
         $("#addIncome").hide();
         $("#inCategory").hide();
+        $("#inflowCheck").val("false");
         $("#outCategory").attr("name", "category").show();
         $("#addCashFlow").show();
     });

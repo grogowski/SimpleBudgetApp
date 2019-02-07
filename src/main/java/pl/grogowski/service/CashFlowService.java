@@ -74,10 +74,6 @@ public class CashFlowService {
 
     public void persist(CashFlow cashFlow, String userEmail) {
         cashFlow.setUser(userService.getUserByEmail(userEmail));
-        if (cashFlow.getCategory().getName().equals("Income")) {
-            cashFlow.setCategory(null);
-            cashFlow.setInflow(true);
-        }
         cashFlowRepository.save(cashFlow);
     }
 
