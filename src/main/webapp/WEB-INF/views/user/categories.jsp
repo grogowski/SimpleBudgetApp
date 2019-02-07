@@ -16,7 +16,7 @@
 <%@ include file="header_menu.jspf" %>
 <div class="row row-eq-height">
     <div class="col-lg-6">
-        <div class="card my-3 ml-3">
+        <div class="card my-3 ml-3 h-100">
             <div class="card-header">
                 Income Categories
             </div>
@@ -30,7 +30,7 @@
         </div>
     </div>
     <div class="col-lg-6">
-        <div class="card my-3 mr-3">
+        <div class="card my-3 mr-3 h-100">
             <div class="card-header">
                 Spending Categories
             </div>
@@ -44,4 +44,37 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card my-3 ml-3">
+            <div class="card-body">
+                <button id="addIncomeCategoryButton" class="btn btn-primary">Add income category</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card my-3 mr-3">
+            <div class="card-body">
+                <button id="addSpendingCategoryButton" class="btn btn-primary">Add spending category</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card my-3 mx-3">
+            <div class="card-body">
+                <form:form class="form-inline" modelAttribute="category" method="post" id="addCategoryForm"
+                           action="/user/addCategory">
+                    <form:input class="form-control" type="text" path="name" placeholder="New category name"/>
+                    <form:input path="inflow" type="hidden" value="false"/>
+                    <input id="subButton" class="btn btn-primary" type="submit" value="Add spending category">
+                    <input type="hidden" name="displayedMonth" value="na">
+                </form:form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
 

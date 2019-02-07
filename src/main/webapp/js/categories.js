@@ -13,6 +13,19 @@ $(document).ready(function () {
         cancel.detach();
         editingOfaValueInProgress = false;
     }
+    $("#addCategoryForm").hide();
+    $("#addIncomeCategoryButton").on("click", function () {
+        $(this).hide();
+        $("#addSpendingCategoryButton").hide();
+        $("#inflow").val("true");
+        $("#subButton").val("Add income category");
+        $("#addCategoryForm").show();
+    });
+    $("#addSpendingCategoryButton").on("click", function () {
+        $(this).hide();
+        $("#addIncomeCategoryButton").hide();
+        $("#addCategoryForm").show();
+    });
     $(".editable").on("click", "span", function () {
         if (!editingOfaValueInProgress) {
             editingOfaValueInProgress = true;

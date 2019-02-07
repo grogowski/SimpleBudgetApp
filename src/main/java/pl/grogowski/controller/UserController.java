@@ -139,6 +139,9 @@ public class UserController {
                 && !categoryService.userCategoriesContainCategoryWithGivenName(category.getName(), userEmail)) {
             categoryService.addCategory(userEmail, category);
         }
+        if (displayedMonth.equals("na")) {
+            return "redirect: /user/categories";
+        }
         return "redirect: /user/main/" + displayedMonth;
     }
 
@@ -198,6 +201,7 @@ public class UserController {
     public String showCategories(Model model, @SessionAttribute String userEmail) {
         model.addAttribute("inCategories", categoryService.getCategoriesForUser(userEmail, true));
         model.addAttribute("outCategories", categoryService.getCategoriesForUser(userEmail, false));
+        model.addAttribute("category", new Category());
         return "user/categories";
     }
 
