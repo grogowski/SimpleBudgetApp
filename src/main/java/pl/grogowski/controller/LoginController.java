@@ -7,7 +7,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import pl.grogowski.model.User;
 import pl.grogowski.service.CategoryService;
 import pl.grogowski.service.UserService;
@@ -18,19 +17,18 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 
 @Controller
-@SessionAttributes("count")
 public class LoginController {
     @Autowired
     UserService userService;
     @Autowired
     CategoryService categoryService;
 
-    @RequestMapping(path = "", method = RequestMethod.GET)
+    @RequestMapping(path = "/login", method = RequestMethod.GET)
     public String getLoginData() {
         return "/login/login";
     }
 
-    @RequestMapping(path = "", method = RequestMethod.POST)
+    @RequestMapping(path = "/login", method = RequestMethod.POST)
     public String login(@RequestParam String email, @RequestParam String password, HttpSession session, Model model) {
         if (userService.authenticate(email, password)) {
             LocalDate presentMonth = BudgetUtil.getPresentMonth();
@@ -42,13 +40,13 @@ public class LoginController {
         return "/login/login";
     }
 
-    @RequestMapping(path = "register", method = RequestMethod.GET)
+    @RequestMapping(path = "/register", method = RequestMethod.GET)
     public String getRegisterData(Model model) {
         model.addAttribute("user", new User());
         return "/login/register";
     }
 
-    @RequestMapping(path = "register", method = RequestMethod.POST)
+    @RequestMapping(path = "/register", method = RequestMethod.POST)
     public String register(@Valid User user, BindingResult result, @RequestParam String repeated, Model model) {
         boolean errorsPresent = false;
         if (user.getPassword().length()<6||user.getPassword().length()>24) {
@@ -68,7 +66,7 @@ public class LoginController {
         } else {
             userService.registerUser(user);
             categoryService.createCategoriesForNewUser(user);
-            return "redirect: /";
+            return "redirect: /login";
         }
     }
 

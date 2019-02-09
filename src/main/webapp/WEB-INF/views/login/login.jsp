@@ -23,7 +23,7 @@
     <div class="card card-login mx-auto mt-5">
         <div class="card-header">Login</div>
         <div class="card-body">
-            <form>
+            <form method="post">
                 <div class="form-group">
                     <div class="form-label-group">
                         <input name="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required="required" autofocus="autofocus">
