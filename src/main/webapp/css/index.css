@@ -1,16 +1,8 @@
-.navbar{ background: blue;}
-
-.nav-link , .navbar-brand{ color: #f4f4f4;}
-
-.nav-link{ margin-right: 1em !important;}
-
-.nav-link:hover{ background: #f4f4f4; color: blue; }
-
-.navbar-brand:hover{ background: #f4f4f4; color: blue; }
-
+.nav-link{
+    margin-right: 1em !important;
+    font-size: 1.5em;
+}
 .navbar-collapse{ justify-content: flex-end;}
-
-.navbar-toggler{  background:#fff !important;}
 
 .header{
     background-image: url('/img/money-pocket.jpg');
@@ -25,29 +17,18 @@
     min-width: 100%;
     left: 0;
     top: 0;
-    background: rgba(244, 244, 244, 0.4);
+    background: rgba(244, 244, 244, 0.3);
 }
 
 .description{
     position: absolute;
     top: 50%;
-    margin: auto;
+    left: 25%;
     padding: 2em;
 }
 
 .description h1{
-    color: blue ;
+    color: #f4f4f4;
+    font-size: 5em;
 }
 
-.description p{
-    color:#666;
-    font-size: 1rem;
-    line-height: 1.5;
-    width: 50%;
-}
-
-.description button{
-    border:1px  solid #F97300;
-    background: blue;
-    color:#fff;
-}
