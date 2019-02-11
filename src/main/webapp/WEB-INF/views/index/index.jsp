@@ -29,7 +29,6 @@
             <div class="description">
                 <h1>Simple Budget App</h1>
                 <a class="btn btn-dark btn-lg" href="#about">See more</a>
-                </h1>
             </div>
         </div>
     </div>

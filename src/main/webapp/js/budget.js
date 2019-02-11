@@ -53,7 +53,7 @@ $(document).ready(function () {
                         id: categoryInput.attr("id")
                     },
                     success: function (result) {
-                        originalSpan.text(result.categoryName).show();
+                        originalSpan.text(categoryInput.val()).show();
                         categoryInput.remove();
                         cleanUp();
                     }

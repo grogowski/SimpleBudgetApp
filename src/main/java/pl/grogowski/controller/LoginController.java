@@ -47,7 +47,7 @@ public class LoginController {
     }
 
     @RequestMapping(path = "/register", method = RequestMethod.POST)
-    public String register(@Valid User user, BindingResult result, @RequestParam String repeated, Model model) {
+    public String register(@Valid User user, BindingResult result, @RequestParam String repeated, Model model, HttpSession session) {
         boolean errorsPresent = false;
         if (user.getPassword().length()<6||user.getPassword().length()>24) {
             model.addAttribute("errorLength", "Password must be between 6 and 24 characters");
@@ -61,12 +61,14 @@ public class LoginController {
             model.addAttribute("errorMail", "Account with this email already exists");
             errorsPresent = true;
         }
-        if(errorsPresent) {
+        if(errorsPresent||result.hasErrors()) {
             return "/login/register";
         } else {
             userService.registerUser(user);
             categoryService.createCategoriesForNewUser(user);
-            return "redirect: /login";
+            session.setAttribute("userEmail", user.getEmail());
+            session.setAttribute("presentMonth", BudgetUtil.getPresentMonth());
+            return "redirect: /user/welcome";
         }
     }
 

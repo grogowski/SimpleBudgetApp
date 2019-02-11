@@ -37,6 +37,29 @@ public class UserController {
     @Autowired
     UserService userService;
 
+
+    /**
+     * Returns a welcome screen for a newly registered user.
+     */
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String showWelcomeScreen(Model model, @SessionAttribute String userEmail) {
+        return "user/welcome";
+    }
+
+    /**
+     * Adds initial balance for newly registered user and redirects to budget view
+     */
+    @RequestMapping(path = "/welcome", method = RequestMethod.POST)
+    public String initialBalaceSet(@SessionAttribute String userEmail, @RequestParam BigDecimal initialBalance) {
+        CashFlow balance = new CashFlow();
+        balance.setCategory(categoryService.getCategoriesForUser(userEmail, true).get(1));
+        balance.setAmount(initialBalance);
+        balance.setDate(LocalDate.now());
+        balance.setInflow(true);
+        cashFlowService.persist(balance, userEmail);
+        return "redirect: /user/main/"+BudgetUtil.getPresentMonth();
+    }
+
     /**
      * Returns a budget view for a month specified in path variable.
      */
