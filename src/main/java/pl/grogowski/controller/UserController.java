@@ -87,14 +87,14 @@ public class UserController {
     /**
      * Updates category name or budgeted amount in db, returns JSON with data to update the view.
      */
-    @RequestMapping(value = "/main/edit", method = RequestMethod.POST)
+    @RequestMapping(value = "/main/edit", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody
     public String updateMainView(@RequestParam String changed, @RequestParam String value, @RequestParam String id, @SessionAttribute String userEmail) {
         if (changed.equals("category")) {
             if (!categoryService.userCategoriesContainCategoryWithGivenName(value, userEmail)) {
                 categoryService.editCategory(id, value);
             }
-            return new JSONObject().put("categoryName", categoryService.getCategoryById(id).getName()).toString();
+            return new JSONObject().toString();
         } else if (changed.equals("amount")) {
             recordService.editRecord(id, value);
             Record record = recordService.getRecord(id, userEmail);
@@ -204,7 +204,7 @@ public class UserController {
     /**
      * Returns JSON with data to draw a chart.
      */
-    @RequestMapping(value = "/charts/draw/{month}", method = RequestMethod.POST)
+    @RequestMapping(value = "/charts/draw/{month}", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody
     public String drawChart(@PathVariable String month, @SessionAttribute String userEmail) {
         List<String> categoriesNames = recordService.getCategoriesNamesForUser(userEmail, BudgetUtil.StringToDate(month));
