@@ -1,34 +1,77 @@
-.nav-link{
-    margin-right: 1em !important;
-    font-size: 1.5em;
-}
-.navbar-collapse{ justify-content: flex-end;}
-
-.header{
-    background-image: url('/img/money-pocket.jpg');
-    background-attachment: fixed;
-    background-size: cover;
-    background-position: center;
+body {
+    overflow-x: hidden; /*--right gutter fix--*/
 }
 
-.overlay{
+.container-fluid>a.navbar-brand {
+    font-size: 2rem;
+    color: white;
+}
+
+.nav-link {
+    font-size: 1.5rem;
+}
+
+.home-inner {
+    background-image: url("/img/money-pocket.jpg");
+}
+
+.caption {
+    width: 100%;
+    max-width: 100%;
     position: absolute;
-    min-height: 100%;
-    min-width: 100%;
-    left: 0;
+    top: 57%;
+    z-index: 1;
+}
+
+.caption h2{
+    color: white;
+    font-size: 2.8rem;
+    font-weight: bold;
+}
+
+#start_button {
+    font-size: 1.3rem;
+    border-width: medium;
+    text-transform:  uppercase;
+    border-radius: 0;
+}
+
+h3.heading {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+/*--- iOS Landing Page Fix --*/
+.landing {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: table;
+    background: #E9ECEF;
+    z-index: -1;
+}
+
+.home-wrap {
+    clip: rect(0, auto, auto, 0);
+    position: absolute;
     top: 0;
-    background: rgba(244, 244, 244, 0.3);
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
-.description{
-    position: absolute;
-    top: 50%;
-    left: 25%;
-    padding: 2em;
-}
-
-.description h1{
-    color: #f4f4f4;
-    font-size: 5em;
+.home-inner {
+    position: fixed;
+    display: table;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center center;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform;
 }
 
