@@ -10,12 +10,12 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
     <link rel="stylesheet" href="css/index.css"/>
 </head>
-<body>
-<div id="home">
-    <!-- Start Navigation -->
+<body id="home">
+
+    <!-- NAVIGATION -->
     <nav class="navbar navbar-dark bg-dark navbar-expand-md fixed-top">
-        <div class="container-fluid">
-            <a class="navbar-brand">Simple Budget App</a>
+        <div class="container">
+            <a class="navbar-brand" href="#home">SimpleBudgetApp</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -33,24 +33,21 @@
                 </ul>
             </div>
         </div>
-    </nav><!-- End Navigation -->
+    </nav>
 
-    <!-- Landing Page -->
-    <div class="landing">
-        <div class="home-wrap">
-            <div class="home-inner"></div>
-        </div>
-    </div>
+    <!-- HOME SECTION -->
+    <header id="home-section">
+            <div class="home-inner container">
+                <div class="row">
+                    <div class="col text-center">
+                        <h1 class="pb-2 text-white">Start budgeting with Simple Budget App!</h1>
+                        <a id="start_button" class="btn btn-outline-light py-2 px-3" href="/register">Get started</a>
+                    </div>
+                </div>
+            </div>
+    </header>
 
-    <!-- Landing Page Caption-->
-    <div class="caption center-block text-center">
-        <h2 class="pb-2">Start budgeting with Simple Budget App!</h2>
-        <a id="start_button" class="btn btn-outline-light py-2 px-3" href="/register">Get started</a>
-    </div>
-
-</div> <!-- End Home Section -->
-
-<!-- Start About Section -->
+<!-- ABOUT -->
 <div id="about">
     <div class="jumbotron m-0">
         <h3 class="heading">About</h3>
@@ -85,7 +82,7 @@
             </div>
         </div>
     </div>
-</div><!-- End About Section -->
+</div><
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.bundle.min.js"></script>
