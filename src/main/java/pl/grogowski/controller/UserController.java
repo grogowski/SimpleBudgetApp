@@ -65,7 +65,7 @@ public class UserController {
      */
     @RequestMapping(path = "/main/{month}", method = RequestMethod.GET)
     public String showMain(Model model, @SessionAttribute String userEmail, @PathVariable String month) {
-        LocalDate requestedMonth = BudgetUtil.StringToDate(month);
+        LocalDate requestedMonth = LocalDate.parse(month);
         List<Record> records = recordService.getRecordsForGivenMonth(userEmail, requestedMonth);
         List<LocalDate> dates = recordService.getExistingRecordsDates(userEmail);
         if (!dates.contains(BudgetUtil.getNextMonth())) {
@@ -207,9 +207,9 @@ public class UserController {
     @RequestMapping(value = "/charts/draw/{month}", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody
     public String drawChart(@PathVariable String month, @SessionAttribute String userEmail) {
-        List<String> categoriesNames = recordService.getCategoriesNamesForUser(userEmail, BudgetUtil.StringToDate(month));
-        List<BigDecimal> budgeted = recordService.getBudgetedForGivenMonth(userEmail, BudgetUtil.StringToDate(month));
-        List<BigDecimal> spending = recordService.getSpendingsForGivenMonth(userEmail, BudgetUtil.StringToDate(month));
+        List<String> categoriesNames = recordService.getCategoriesNamesForUser(userEmail, LocalDate.parse(month));
+        List<BigDecimal> budgeted = recordService.getBudgetedForGivenMonth(userEmail, LocalDate.parse(month));
+        List<BigDecimal> spending = recordService.getSpendingsForGivenMonth(userEmail, LocalDate.parse(month));
         Map<String, List> map = new HashMap<>();
         map.put("categories", categoriesNames);
         map.put("budgeted", budgeted);

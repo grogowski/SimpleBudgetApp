@@ -18,9 +18,4 @@ public class BudgetUtil {
         return getPresentMonth().plusMonths(1);
     }
 
-    public static LocalDate StringToDate(String date) {
-        String[] parts = date.split("-");
-        return LocalDate.of(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
-    }
-
 }
