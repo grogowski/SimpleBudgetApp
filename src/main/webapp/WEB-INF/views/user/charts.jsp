@@ -3,6 +3,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>Charts</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
@@ -11,12 +14,13 @@
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="/css/budget.css" rel="stylesheet">
 </head>
 <body>
 <%@ include file="header_menu.jspf" %>
 <div class="row">
-    <div class="col-lg-6">
-        <div class="card my-3 ml-3">
+    <div class="col-md-6">
+        <div class="card my-2 mx-2 text-center"">
             <div class="card-header">
                 Month
             </div>
@@ -29,8 +33,8 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-6">
-        <div class="card my-3 mr-3">
+    <div class="col-md-6">
+        <div class="card my-2 mx-2 text-center">
             <div class="card-header">
                 Chart type
             </div>
@@ -43,7 +47,7 @@
         </div>
     </div>
 </div>
-<div id="barDiv" class="card mb-3 mx-3">
+<div id="barDiv" class="card mb-3 mx-2">
     <div class="card-header">
         <i class="fas fa-chart-bar"></i>
         Budgeted/Spending Bar Chart</div>

@@ -3,6 +3,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>Categories</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
@@ -15,8 +18,8 @@
 <body>
 <%@ include file="header_menu.jspf" %>
 <div class="row row-eq-height">
-    <div class="col-lg-6">
-        <div class="card my-3 ml-3 h-100">
+    <div class="col-md-6">
+        <div class="card my-3 mx-2 h-100">
             <div class="card-header">
                 Income Categories
             </div>
@@ -29,8 +32,8 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-6">
-        <div class="card my-3 mr-3 h-100">
+    <div class="col-md-6">
+        <div class="card my-3 mx-2 h-100">
             <div class="card-header">
                 Spending Categories
             </div>
@@ -45,15 +48,15 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-6">
-        <div class="card my-3 ml-3">
+    <div class="col-md-6">
+        <div class="card my-3 mx-2">
             <div class="card-body">
                 <button id="addIncomeCategoryButton" class="btn btn-primary">Add income category</button>
             </div>
         </div>
     </div>
-    <div class="col-lg-6">
-        <div class="card my-3 mr-3">
+    <div class="col-md-6">
+        <div class="card my-3 mx-2">
             <div class="card-body">
                 <button id="addSpendingCategoryButton" class="btn btn-primary">Add spending category</button>
             </div>
@@ -61,8 +64,8 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-12">
-        <div class="card my-3 mx-3">
+    <div class="col">
+        <div class="card my-3 mx-2">
             <div class="card-body">
                 <form:form class="form-inline" modelAttribute="category" method="post" id="addCategoryForm"
                            action="/user/addCategory">
